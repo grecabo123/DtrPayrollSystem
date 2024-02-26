@@ -4,6 +4,7 @@ import axios from 'axios'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Login from './components/Login';
 import PrimeReact from 'primereact/api';
+import PrivateAdminRoutes from './privateroutes/PrivateAdminRoutes';
 
 
 axios.defaults.baseURL = "http://127.0.0.1:8000";
@@ -27,6 +28,8 @@ function App() {
                 <Switch>
                     <Route path="/" exact={true} component={Landing} />
                     <Route path="/login" component={Login} />
+
+                    <PrivateAdminRoutes path="/admin" name="admin" />
                 </Switch>
             </Router>
     )
