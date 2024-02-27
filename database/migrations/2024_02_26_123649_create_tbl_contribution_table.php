@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTblEmployeeTable extends Migration
+class CreateTblContributionTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,12 @@ class CreateTblEmployeeTable extends Migration
      */
     public function up()
     {
-        Schema::create('tbl_employee', function (Blueprint $table) {
+        Schema::create('tbl_contribution', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('department_fk');
-            $table->foreign('department_fk')->references('id')->on('tbl_department')->onDelete('cascade')->onUpdate('cascade');
-            $table->string('specific_role');
-            $table->double('monthly',10,2);
-            $table->double('per_day',10,2);
+            $table->string('sss');
+            $table->string('pagibig');
+            $table->string('philhealth');
+            $table->string('tin');
             $table->unsignedBigInteger('user_fk');
             $table->foreign('user_fk')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
@@ -33,6 +32,6 @@ class CreateTblEmployeeTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tbl_employee');
+        Schema::dropIfExists('tbl_contribution');
     }
 }

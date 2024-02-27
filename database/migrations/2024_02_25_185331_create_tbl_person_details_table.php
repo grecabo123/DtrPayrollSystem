@@ -15,6 +15,12 @@ class CreateTblPersonDetailsTable extends Migration
     {
         Schema::create('tbl_person_details', function (Blueprint $table) {
             $table->id();
+            $table->string('current_adr');
+            $table->string('perma_adr');
+            $table->string('contact');
+            $table->string('birthdate');
+            $table->unsignedBigInteger('user_fk');
+            $table->foreign('user_fk')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

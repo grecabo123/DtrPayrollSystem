@@ -1,11 +1,26 @@
 <?php
 
-use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\AnnouncementController;
+use App\Http\Controllers\API\HolidayController;
+use App\Http\Controllers\API\PhilhealthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\SSSController;
+use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\LogsController;
+use App\Http\Controllers\API\AdminController;
+use App\Http\Controllers\API\PagibigController;
 
 // Login
 Route::post('Login',[AuthController::class, 'Login']);
+
+
+
+// Logs
+Route::get('Logs/{id}',[LogsController::class, 'Logs']);
+
+// Calendar Announcement
+Route::get('Announcement',[AnnouncementController::class, 'Announcement']);
 
 
 Route::middleware(['auth:sanctum', 'isAPIAdmin'])->group(function () {
@@ -15,6 +30,36 @@ Route::middleware(['auth:sanctum', 'isAPIAdmin'])->group(function () {
             "role"          =>      auth()->user()->role,
         ],200);
     }); 
+
+    Route::get('FetchData',[AdminController::class, 'FetchData']);
+    Route::get('FetchDataStatus',[AdminController::class, 'FetchDataStatus']);
+    Route::post('AddDepartment',[AdminController::class, 'AddDepartment']);
+    Route::put('UpdateStatus',[AdminController::class, 'UpdateStatus']);
+
+    // Holiday
+    Route::post('AddHoliday',[HolidayController::class, 'AddHoliday']);
+    Route::get('LegalHoliday',[HolidayController::class, 'LegalHoliday']);
+    Route::get('SpecialHoliday',[HolidayController::class, 'SpecialHoliday']);
+    Route::put('UpdateHoliday',[HolidayController::class, 'UpdateHoliday']);
+    Route::delete('RemoveHoliday/{id}',[HolidayController::class, 'RemoveHoliday']);
+
+    // SSS Contribution
+    Route::post('SSSRegister',[SSSController::class, 'SSSRegister']);
+    Route::get('SSSContribution',[SSSController::class, 'SSSContribution']);
+    Route::put('SSSContributionUpdate',[SSSController::class, 'SSSContributionUpdate']);
+    Route::delete('SSSContributionRemove/{id}',[SSSController::class, 'SSSContributionRemove']);
+
+    // Pagibig
+    Route::post('PagIbigRegister',[PagibigController::class, 'PagIbigRegister']);
+    Route::get('PagIbigContribution',[PagibigController::class, 'PagIbigContribution']);
+    Route::put('PagIbigContributionUpdate',[PagibigController::class, 'PagIbigContributionUpdate']);
+    Route::delete('PagIbigContributionRemove/{id}',[PagibigController::class, 'PagIbigContributionRemove']);
+
+    // Philhealth
+    Route::post('PhilhealthRegister',[PhilhealthController::class, 'PhilhealthRegister']);
+    Route::get('PhilhealthContribution',[PhilhealthController::class, 'PhilhealthContribution']);
+    Route::put('PhilhealthContributionUpdate',[PhilhealthController::class, 'PhilhealthContributionUpdate']);
+    Route::delete('PhilhealthContributionRemove/{id}',[PhilhealthController::class, 'PhilhealthContributionRemove']);
 });
 
 

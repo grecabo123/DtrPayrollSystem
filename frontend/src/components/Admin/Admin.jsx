@@ -3,47 +3,76 @@ import { Link, Redirect, Route, Switch, useHistory } from 'react-router-dom/cjs/
 import AdminRoutes from '../../routes/AdminRoutes'
 import { FcCalendar, FcSurvey, FcOpenedFolder, FcHome, FcSms, FcPositiveDynamic, FcManager, FcHighPriority, FcCheckmark, FcFolder, FcFeedback, FcBiohazard, FcAssistant, FcBarChart, FcFactory, FcLineChart, FcInfo, FcDeployment, FcCollaboration } from 'react-icons/fc'
 import { FaArchive, FaBars, FaBox, FaBuilding, FaCalculator, FaCalendar, FaCalendarCheck, FaCalendarPlus, FaCaretDown, FaCaretRight, FaChartLine, FaClock, FaCogs, FaDatabase, FaDeskpro, FaDesktop, FaDollarSign, FaEnvelope, FaFolder, FaFolderOpen, FaHeart, FaHome, FaMoneyBill, FaPen, FaPenAlt, FaStore, FaUserAlt, FaUsers } from 'react-icons/fa'
-import { HiOutlineX } from "react-icons/hi";
-import { BiLogOut } from 'react-icons/bi'
 import axios from 'axios'
 import swal from 'sweetalert'
 import { Menubar } from 'primereact/menubar'
+import { PrimeIcons } from 'primereact/api'
 
 function Admin() {
 
     const items = [
         {
             label: 'Home',
-            icon: 'pi pi-home'
+            icon: 'pi pi-home',
+            command: () => {
+                history.push(`/admin`);
+            }
         },
         {
-            label: 'Features',
-            icon: 'pi pi-star'
+            label: 'Holidays',
+            items: [
+                {
+                    label: 'Legal Holiday',
+                    icon: 'pi pi-bolt',
+                    command: () => {
+                        history.push(`/admin/holiday/legal`);
+                    }
+                },
+                {
+                    label: 'Special Holiday',
+                    icon: 'pi pi-server',
+                    command: () => {
+                        history.push(`/admin/holiday/special`);
+                    }
+                },
+              
+            ]
         },
         {
             label: 'Contribution',
             items: [
                 {
                     label: 'SSS',
-                    icon: 'pi pi-bolt'
+                    command: () => {
+                        history.push(`/admin/contribution/sss`)
+                    }
                 },
                 {
                     label: 'Pag-Ibig',
-                    icon: 'pi pi-server'
+                    command: () => {
+                        history.push(`/admin/contribution/pagibig`)
+                    }
                 },
                 {
                     label: 'Philhealth',
-                    icon: 'pi pi-pencil'
+                    command: () => {
+                        history.push(`/admin/contribution/philhealth`)
+                    }
                 },
                 {
                     label: 'TIN',
-                    icon: 'pi pi-palette',
+                    command: () => {
+                        history.push(`/admin/contribution/tin`)
+                    }
                 }
             ]
         },
         {
-            label: 'Contact',
-            icon: 'pi pi-envelope'
+            label: 'Calendar',
+            icon: PrimeIcons.CALENDAR,
+            command: () => {
+                history.push(`/admin/calendar/announcements`)
+            }
         }
     ];
 
@@ -87,7 +116,7 @@ function Admin() {
                         <FaStore className='nav-icon' />Department</a>
                     </li>
                     <div class="collapse" id='stores'>
-                        <li class="nav-item"><Link class="nav-link" to="/admin/store"><FcFactory className='nav-icon' /> Create Department</Link></li>                       
+                        <li class="nav-item"><Link class="nav-link" to="/admin/department"><FcFactory className='nav-icon' /> Create Department</Link></li>                       
                         <li class="nav-item"><Link class="nav-link" to="/admin/store"><FcCalendar className='nav-icon' /> Schedule Department</Link></li>                       
                     </div>
 
@@ -100,7 +129,7 @@ function Admin() {
                     </div>
 
                     <li class="nav-group"><a class="nav-link nav-group-toggle" data-bs-toggle="collapse" data-bs-target="#schedule">
-                        <FcCalendar className='nav-icon' />Schedule Data</a>
+                        <FcCalendar className='nav-icon' />Calendar Settings</a>
                     </li>
                     <div class="collapse" id='schedule'>
                         <li class="nav-item"><Link class="nav-link" to="/admin/product"><FcOpenedFolder className='nav-icon' />Create Schedule</Link></li>
