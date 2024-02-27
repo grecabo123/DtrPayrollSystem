@@ -35,6 +35,8 @@ function RegisterEmployee() {
         e.preventDefault();
     }
 
+    
+
     return (
         <div className='container-fluid'>
             <div className="row">

@@ -96,6 +96,7 @@ function SSS() {
 
     const ERFormat = (Data) => {
         return (
+         
             <span>₱{Data.ER.toFixed(2)}</span>
         )
     }

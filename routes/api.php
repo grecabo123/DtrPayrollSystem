@@ -4,6 +4,7 @@ use App\Http\Controllers\API\AnnouncementController;
 use App\Http\Controllers\API\EventController;
 use App\Http\Controllers\API\HolidayController;
 use App\Http\Controllers\API\PhilhealthController;
+use App\Http\Controllers\API\SalaryPeriodController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\SSSController;
@@ -70,6 +71,13 @@ Route::middleware(['auth:sanctum', 'isAPIAdmin'])->group(function () {
     Route::get('PhilhealthContribution',[PhilhealthController::class, 'PhilhealthContribution']);
     Route::put('PhilhealthContributionUpdate',[PhilhealthController::class, 'PhilhealthContributionUpdate']);
     Route::delete('PhilhealthContributionRemove/{id}',[PhilhealthController::class, 'PhilhealthContributionRemove']);
+
+
+    // Salary Period
+    Route::post('CreateSalary',[SalaryPeriodController::class, 'CreateSalary']);
+    Route::get('FetchSalary',[SalaryPeriodController::class, 'FetchSalary']);
+    Route::put('SalaryUpdate',[SalaryPeriodController::class, 'SalaryUpdate']);
+    Route::delete('SalaryRemove/{id}',[SalaryPeriodController::class, 'SalaryRemove']);
 });
 
 
