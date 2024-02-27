@@ -10,6 +10,10 @@ import RegisterEmployee from "../components/Admin/pages/Employee/RegisterEmploye
 import Legal from "../components/Admin/pages/Holidays/Legal";
 import Special from "../components/Admin/pages/Holidays/Special";
 import ActivityLogs from "../components/Admin/pages/Logs/ActivityLogs";
+import CreateSchedule from "../components/Admin/pages/Schedule/CreateSchedule";
+import NumberofDuty from "../components/Admin/pages/Schedule/NumberofDuty";
+import SalaryPeriod from "../components/Admin/pages/Schedule/SalaryPeriod";
+import ScheduleData from "../components/Admin/pages/Schedule/ScheduleData";
 
 
 const AdminRoutes = [
@@ -25,6 +29,10 @@ const AdminRoutes = [
     {path: "/admin/contribution/pagibig", exact: true, name: "Pagibig", component: PagIbig},
     {path: "/admin/holiday/legal", exact: true, name: "Legal", component: Legal},
     {path: "/admin/holiday/special", exact: true, name: "Special", component: Special},
+    {path: "/admin/calendar/create", exact: true, name: "Create", component: CreateSchedule},
+    {path: "/admin/calendar/days", exact: true, name: "Number", component: NumberofDuty},
+    {path: "/admin/calendar/salary", exact: true, name: "Salary", component: SalaryPeriod},
+    {path: "/admin/calendar/schedule", exact: true, name: "Schedule", component: ScheduleData},
 ];
 
 export default AdminRoutes;

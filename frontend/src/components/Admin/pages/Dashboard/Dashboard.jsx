@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { DataTable } from 'primereact/datatable';
 import BarChartData from './BarChartData';
 import { Panel } from 'primereact/panel';
+import EventsCalendar from './EventsCalendar';
 
 
 function Dashboard() {
@@ -100,7 +101,7 @@ function Dashboard() {
 
                     </motion.div>
                 </div>
-                <div className="col-lg-12 mb-2">
+                <div className="col-lg-3 mb-2">
                     <motion.div
                         initial={{ opacity: 0, scale: 0.5 }}
                         animate={{ opacity: 1, scale: 1 }}
@@ -112,6 +113,22 @@ function Dashboard() {
                     >
                         <Panel header="Weather Forecast">
 
+                        </Panel>
+
+                    </motion.div>
+                </div>
+                <div className="col-lg-9 mb-2">
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.5 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{
+                            duration: 0.8,
+                            delay: 1.2,
+                            ease: [0, 0.71, 0.2, 1.01]
+                        }}
+                    >
+                        <Panel header="All Events">
+                            <EventsCalendar />
                         </Panel>
 
                     </motion.div>

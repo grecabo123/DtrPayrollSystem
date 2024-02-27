@@ -1,18 +1,35 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { Link, Redirect, Route, Switch, useHistory } from 'react-router-dom/cjs/react-router-dom.min'
 import AdminRoutes from '../../routes/AdminRoutes'
-import { FcCalendar, FcSurvey, FcOpenedFolder, FcHome, FcSms, FcPositiveDynamic, FcManager, FcHighPriority, FcCheckmark, FcFolder, FcFeedback, FcBiohazard, FcAssistant, FcBarChart, FcFactory, FcLineChart, FcInfo, FcDeployment, FcCollaboration } from 'react-icons/fc'
+import { FcCalendar, FcSurvey, FcOpenedFolder, FcHome, FcSms, FcPositiveDynamic, FcManager, FcHighPriority, FcCheckmark, FcFolder, FcFeedback, FcBiohazard, FcAssistant, FcBarChart, FcFactory, FcLineChart, FcInfo, FcDeployment, FcCollaboration, FcSettings, FcPlanner, FcSportsMode, FcFile } from 'react-icons/fc'
 import { FaArchive, FaBars, FaBox, FaBuilding, FaCalculator, FaCalendar, FaCalendarCheck, FaCalendarPlus, FaCaretDown, FaCaretRight, FaChartLine, FaClock, FaCogs, FaDatabase, FaDeskpro, FaDesktop, FaDollarSign, FaEnvelope, FaFolder, FaFolderOpen, FaHeart, FaHome, FaMoneyBill, FaPen, FaPenAlt, FaStore, FaUserAlt, FaUsers } from 'react-icons/fa'
 import axios from 'axios'
 import swal from 'sweetalert'
 import { Menubar } from 'primereact/menubar'
 import { PrimeIcons } from 'primereact/api'
+import { Avatar } from 'primereact/avatar'
+import { Menu } from 'primereact/menu'
 
 function Admin() {
 
+
+    const menu = useRef(null);
+
+    const Logout = () => {
+        axios.post(`/api/logout`).then(res => {
+            if (res.data.status === 200) {
+                localStorage.removeItem('auth_token');
+                localStorage.removeItem('auth_id');
+                localStorage.removeItem('auth_name');
+                swal('Success', res.data.message, 'success');
+                history.push('/login');
+            }
+        });
+    }
+
     const items = [
         {
-            label: 'Home',
+            label: 'Instruction',
             icon: 'pi pi-home',
             command: () => {
                 history.push(`/admin`);
@@ -35,7 +52,7 @@ function Admin() {
                         history.push(`/admin/holiday/special`);
                     }
                 },
-              
+
             ]
         },
         {
@@ -76,20 +93,18 @@ function Admin() {
         }
     ];
 
+    let items_list = [
+        { label: 'Settings', icon: 'pi pi-fw pi-cog', url: '/admin/myaccount' },
+        { label: 'My Account', icon: 'pi pi-fw pi-user', command: () => {
+            history.push(`admin/myaccount`)
+        } },
+        { label: <span className='text-danger fw-bold' onClick={Logout}>Logout</span>, icon: 'pi pi-fw pi-power-off' },
+    ];
+
 
     const history = useHistory();
 
-    const Logout = () => {
-        axios.post(`/api/logout`).then(res => {
-            if (res.data.status === 200) {
-                localStorage.removeItem('auth_token');
-                localStorage.removeItem('auth_id');
-                localStorage.removeItem('auth_name');
-                swal('Success', res.data.message, 'success');
-                history.push('/');
-            }
-        });
-    }
+
 
 
     return (
@@ -116,8 +131,8 @@ function Admin() {
                         <FaStore className='nav-icon' />Department</a>
                     </li>
                     <div class="collapse" id='stores'>
-                        <li class="nav-item"><Link class="nav-link" to="/admin/department"><FcFactory className='nav-icon' /> Create Department</Link></li>                       
-                        <li class="nav-item"><Link class="nav-link" to="/admin/store"><FcCalendar className='nav-icon' /> Schedule Department</Link></li>                       
+                        <li class="nav-item"><Link class="nav-link" to="/admin/department"><FcFactory className='nav-icon' /> Create Department</Link></li>
+                        <li class="nav-item"><Link class="nav-link" to="/admin/store"><FcCalendar className='nav-icon' /> Schedule Department</Link></li>
                     </div>
 
                     <li class="nav-group"><a class="nav-link nav-group-toggle" data-bs-toggle="collapse" data-bs-target="#product">
@@ -129,12 +144,24 @@ function Admin() {
                     </div>
 
                     <li class="nav-group"><a class="nav-link nav-group-toggle" data-bs-toggle="collapse" data-bs-target="#schedule">
-                        <FcCalendar className='nav-icon' />Calendar Settings</a>
+                        <FcSettings className='nav-icon' />Calendar Config</a>
                     </li>
                     <div class="collapse" id='schedule'>
-                        <li class="nav-item"><Link class="nav-link" to="/admin/product"><FcOpenedFolder className='nav-icon' />Create Schedule</Link></li>
-                        <li class="nav-item"><Link class="nav-link" to="/admin/product"><FcOpenedFolder className='nav-icon' />Schedule</Link></li>
+                        <li class="nav-item"><Link class="nav-link" to="/admin/calendar/create"><FaPen className='nav-icon' />Create Schedule</Link></li>
+                        <li class="nav-item"><Link class="nav-link" to="/admin/calendar/schedule"><FcCalendar className='nav-icon' />Schedule</Link></li>
+                        <li class="nav-item"><Link class="nav-link" to="/admin/calendar/days"><FcSportsMode className='nav-icon' />Number of Duty</Link></li>
+                        <li class="nav-item"><Link class="nav-link" to="/admin/calendar/salary"><FcPlanner className='nav-icon' />Salary Schedule</Link></li>
                     </div>
+                    <li class="nav-title">Request</li>
+                    <li class="nav-group"><a class="nav-link nav-group-toggle" data-bs-toggle="collapse" data-bs-target="#forms">
+                        <FcFolder className='nav-icon' />Forms</a>
+                    </li>
+                    <div class="collapse" id='forms'>
+                        <li class="nav-item"><Link class="nav-link" to="/admin/calendar/create"><span className='nav-icon' />Sick Report</Link></li>
+                        <li class="nav-item"><Link class="nav-link" to="/admin/calendar/schedule"><span className='nav-icon' />Leave Report</Link></li>
+                        <li class="nav-item"><Link class="nav-link" to="/admin/calendar/days"><span className='nav-icon' />Resignation Report</Link></li>
+                    </div>
+
 
                     <li class="nav-title">Reports</li>
                     <li class="nav-item"><Link class="nav-link" to="/admin/distribute"><FcCollaboration className='nav-icon' />PaySlip</Link></li>
@@ -149,7 +176,14 @@ function Admin() {
                 </ul>
             </div>
             <div className=" wrapper d-flex flex-column min-vh-100">
-                <Menubar model={items} />
+            
+                {/* <Menu model={items_list} id="popup_menu" popup ref={menu} /> */}
+                <Menu model={items_list} popup ref={menu} id="popup_menu_left" />
+                <Menubar model={items} end={
+                    <>
+                        <Avatar className='text-dark fw-bold' onClick={(event) => menu.current.toggle(event)} aria-controls="popup_menu" aria-haspopup shape='square' label='A' size='large' />
+                    </>
+                } />
                 <div className="mt-5">
                     <Switch>
                         {

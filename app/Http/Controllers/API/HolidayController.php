@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Models\Holidays;
 use Illuminate\Http\Request;
+use App\Models\CalendarEvents;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
@@ -31,6 +32,12 @@ class HolidayController extends Controller
             $holiday->holiday_date = $request->date_;
             $holiday->type_holiday = $request->type == 1 ? 1 : 2;
             $holiday->save();
+
+            $event = new CalendarEvents;
+            $event->date_event = $request->date_;
+            $event->event_title = $request->holiday;
+            $event->type_event = $request->type == 1 ? "Legal Holiday" : "Special Holiday";
+            $event->save();
 
             return response()->json([
                 "status"                =>          200,

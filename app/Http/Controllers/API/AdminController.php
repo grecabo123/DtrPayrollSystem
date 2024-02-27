@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Models\Department;
+use App\Models\NumberDays;
 use App\Models\ActivityLogs;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -74,5 +75,29 @@ class AdminController extends Controller
                 "status"            =>          200,
             ]);
         }
+    }
+    public function Days(){
+        $days = NumberDays::all();
+
+        return response()->json([
+            "status"            =>          200,
+            "data"              =>          $days,
+        ]);
+    }
+
+    public function AddDays (Request $request){
+        $days = new NumberDays;
+
+        $days->days = $request->days;
+        $days->save();
+
+        $logs = new ActivityLogs;
+        $logs->description = $request->days." "."Registered in System";
+        $logs->user_fk = $request->user_fk;
+        $logs->save();
+
+        return response()->json([
+            "status"            =>          200,
+        ]);
     }
 }

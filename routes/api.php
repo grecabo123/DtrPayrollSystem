@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\AnnouncementController;
+use App\Http\Controllers\API\EventController;
 use App\Http\Controllers\API\HolidayController;
 use App\Http\Controllers\API\PhilhealthController;
 use Illuminate\Http\Request;
@@ -19,9 +20,14 @@ Route::post('Login',[AuthController::class, 'Login']);
 // Logs
 Route::get('Logs/{id}',[LogsController::class, 'Logs']);
 
+// Events
+Route::get('AllEvent',[EventController::class, 'AllEvent']);
+
 // Calendar Announcement
 Route::get('Announcement',[AnnouncementController::class, 'Announcement']);
 
+// Department
+Route::get('FetchData',[AdminController::class, 'FetchData']);
 
 Route::middleware(['auth:sanctum', 'isAPIAdmin'])->group(function () {
     Route::get('/checking',function() {
@@ -31,7 +37,7 @@ Route::middleware(['auth:sanctum', 'isAPIAdmin'])->group(function () {
         ],200);
     }); 
 
-    Route::get('FetchData',[AdminController::class, 'FetchData']);
+    // Department
     Route::get('FetchDataStatus',[AdminController::class, 'FetchDataStatus']);
     Route::post('AddDepartment',[AdminController::class, 'AddDepartment']);
     Route::put('UpdateStatus',[AdminController::class, 'UpdateStatus']);
@@ -42,6 +48,10 @@ Route::middleware(['auth:sanctum', 'isAPIAdmin'])->group(function () {
     Route::get('SpecialHoliday',[HolidayController::class, 'SpecialHoliday']);
     Route::put('UpdateHoliday',[HolidayController::class, 'UpdateHoliday']);
     Route::delete('RemoveHoliday/{id}',[HolidayController::class, 'RemoveHoliday']);
+
+    // Days
+    Route::post('AddDays',[AdminController::class, 'AddDays']);
+    Route::get('Days',[AdminController::class, 'Days']);
 
     // SSS Contribution
     Route::post('SSSRegister',[SSSController::class, 'SSSRegister']);
