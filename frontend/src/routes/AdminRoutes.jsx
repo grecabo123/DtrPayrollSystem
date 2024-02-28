@@ -14,6 +14,7 @@ import CreateSchedule from "../components/Admin/pages/Schedule/CreateSchedule";
 import NumberofDuty from "../components/Admin/pages/Schedule/NumberofDuty";
 import SalaryPeriod from "../components/Admin/pages/Schedule/SalaryPeriod";
 import ScheduleData from "../components/Admin/pages/Schedule/ScheduleData";
+import WebConfig from "../components/Admin/pages/Settings/WebConfig";
 
 
 const AdminRoutes = [
@@ -33,6 +34,7 @@ const AdminRoutes = [
     {path: "/admin/calendar/days", exact: true, name: "Number", component: NumberofDuty},
     {path: "/admin/calendar/salary", exact: true, name: "Salary", component: SalaryPeriod},
     {path: "/admin/calendar/schedule", exact: true, name: "Schedule", component: ScheduleData},
+    {path: "/admin/settings/config", exact: true, name: "Config", component: WebConfig},
 ];
 
 export default AdminRoutes;

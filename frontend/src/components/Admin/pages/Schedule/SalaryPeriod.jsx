@@ -114,7 +114,7 @@ function SalaryPeriod() {
             id: DetailInfo.id,
             from: moment(DetailInfo.from).format('MM DD YYYY'),
             to: moment(DetailInfo.to).format('MM DD YYYY'),
-            salary_text: moment(DetailInfo.to).format('MM Do')+''+'Salary Period',
+            salary_text: moment(DetailInfo.to).format('MMM Do')+' '+'Salary Period',
         };
 
         DetailInfo.indicator == 1 ?

@@ -47,6 +47,10 @@ function PrivateAdminRoutes({ ...rest }) {
                 swal("Warning", error.response.data.message, "warning");
                 history.push('/user')
             }
+            else if(error.response.data.token === 4) {
+                swal("Warning",error.response.data.message,'warning');
+                history.push(`/employee`);
+            }
         }
         // Page Not Found
         else if (error.response.status === 404) {

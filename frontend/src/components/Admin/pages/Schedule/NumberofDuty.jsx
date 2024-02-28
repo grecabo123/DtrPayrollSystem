@@ -5,6 +5,7 @@ import { Button } from 'primereact/button';
 import { Column } from 'primereact/column'
 import { DataTable } from 'primereact/datatable'
 import { Dialog } from 'primereact/dialog';
+import { InputNumber } from 'primereact/inputnumber';
 import { InputText } from 'primereact/inputtext';
 import { Panel } from 'primereact/panel'
 import { Toast } from 'primereact/toast';
@@ -17,7 +18,24 @@ function NumberofDuty() {
     const [btnloading, setbtnloading] = useState(false)
     const [num, setnum] = useState();
     const [loading, setloading] = useState(true);
-    const [numdata, setnumdata] = useState([])
+    const [numdata, setnumdata] = useState([]);
+    const [ModalDisplay, setEditModal] = useState(false);
+    const [Countdays, setCount] = useState({
+        overall: "",
+        saturday: "",
+        friday: "",
+    })
+    const [daysDetails, setDetails] = useState({
+        id: "",
+        days: "",
+        user_fk: "",
+    });
+    const currentYear = moment().year();
+    const daysInYear = moment(`${currentYear}-12-31`).dayOfYear();
+    const sundays = Math.floor(daysInYear / 7);
+    const daysWithoutSunday = daysInYear - sundays;
+    const daysWithoutSaturdaySunday = daysInYear - (2 * sundays);
+    
     const toast = useRef();
     useEffect(() => {
         FetchData();
@@ -26,6 +44,8 @@ function NumberofDuty() {
             setloading(true)
         }
     }, []);
+
+
 
     const FetchData = () => {
         axios.get(`/api/Days`).then(res => {
@@ -55,6 +75,10 @@ function NumberofDuty() {
                 setVisible(false);
                 setbtnloading(false);
             }
+            else if(res.data.status === 204){
+                setbtnloading(false)
+                swal("Warning","Cannot be Add", 'warning');
+            }
         }).catch((error) => {
             if (error.response.status === 500) {
 
@@ -67,10 +91,65 @@ function NumberofDuty() {
     const date_format = (numdata) => {
         return (
             <>
-                <span>{moment(numdata.created_at).format('MMM DD YYYY hh:mm a')}</span>
+                <span>{moment(numdata.created_at).format('MMM DD YYYY')}</span>
             </>
         )
     }
+
+    const HideModal = () => {
+        setEditModal(false);
+        setVisible(false)
+    }
+
+    const handleupdate = (e) => {
+        e.persist();
+        setDetails({ ...daysDetails, [e.target.name]: e.target.value });
+    }
+
+    const ActionButton = (numdata) => {
+        return (
+            <>
+                <Button className='p-button-sm p-button-success' label='Edit'
+                    data-id={numdata.id}
+                    data-days={numdata.days}
+                    data-user_fk={localStorage.getItem('auth_id')}
+                    icon={PrimeIcons.PLUS}
+                    onClick={EditModal}
+                />
+            </>
+        )
+    }
+
+    const UpdateDays = (e) => {
+        e.preventDefault();
+
+        const data = daysDetails;
+
+        axios.put(`/api/UpdateDays`, data).then(res => {
+            if (res.data.status === 200) {
+                toast.current.show({ severity: 'success', summary: "Days has been updated", detail: "Successfully" });
+                setEditModal(false)
+                FetchData();
+                document.getElementById('form').reset();
+            }
+        }).catch((error) => {
+            if (error.response.status === 500) {
+
+            }
+        })
+    }
+
+    const EditModal = (e) => {
+        setEditModal(true)
+        setDetails({
+            id: e.currentTarget.getAttribute('data-id'),
+            days: e.currentTarget.getAttribute('data-days'),
+            user_fk: localStorage.getItem('auth_id'),
+        });
+    }
+
+
+
 
     return (
         <div className='container-fluid'>
@@ -83,12 +162,26 @@ function NumberofDuty() {
                 </div>
                 <DataTable loading={loading} value={numdata} paginator paginatorLeft rows={10}>
                     <Column field='days' header="Total"></Column>
+                    <Column field='id' body={ActionButton} header="Actions"></Column>
                     <Column field='created_at' body={date_format} header="Created"></Column>
                 </DataTable>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente, quam?</p>
+
+                <div className="mt-3">
+                    <h6> Number of Days in {moment().format('YYYY')}</h6>
+                    <li>
+                        <span>Total Days:  {daysInYear}</span>
+                    </li>
+                    <li>
+                        <span>Without Sunday & Saturday:  {daysWithoutSaturdaySunday}</span>
+                    </li>
+                    <li>
+
+                        <span>Without Sunday:  {daysWithoutSunday}</span>
+                    </li>
+                </div>
             </Panel>
 
-            <Dialog header="Add Days" visible={visible} position='top' draggable={false} style={{ width: "50vw" }} >
+            <Dialog header="Add Days" visible={visible} onHide={HideModal} position='top' draggable={false} style={{ width: "50vw" }} >
                 <form onSubmit={AddDays} id='form'>
                     <div className="container">
                         <div className="row">
@@ -101,6 +194,24 @@ function NumberofDuty() {
                         </div>
                         <div className="mt-3">
                             <Button className='w-100' label='Register' loading={btnloading} />
+                        </div>
+                    </div>
+                </form>
+            </Dialog>
+
+            <Dialog onHide={HideModal} header="Edit Number of Days" visible={ModalDisplay} position='top' draggable={false} style={{ width: '50vw' }}>
+                <form onSubmit={UpdateDays} id='form'>
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-lg-12 mb-2">
+                                <label htmlFor="" className="form-labe">
+                                    Number of Days
+                                </label>
+                                <InputText value={daysDetails.days} onChange={handleupdate} className='w-100 p-inputtext-sm' keyfilter={'pint'} name='days' />
+                            </div>
+                            <div className="mt-3">
+                                <Button className='w-100 p-button-success' label='Update' />
+                            </div>
                         </div>
                     </div>
                 </form>

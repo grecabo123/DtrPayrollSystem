@@ -42,6 +42,7 @@ Route::middleware(['auth:sanctum', 'isAPIAdmin'])->group(function () {
     Route::get('FetchDataStatus',[AdminController::class, 'FetchDataStatus']);
     Route::post('AddDepartment',[AdminController::class, 'AddDepartment']);
     Route::put('UpdateStatus',[AdminController::class, 'UpdateStatus']);
+    Route::delete('DeleteDepartment/{id}',[AdminController::class, 'DeleteDepartment']);
 
     // Holiday
     Route::post('AddHoliday',[HolidayController::class, 'AddHoliday']);
@@ -53,6 +54,7 @@ Route::middleware(['auth:sanctum', 'isAPIAdmin'])->group(function () {
     // Days
     Route::post('AddDays',[AdminController::class, 'AddDays']);
     Route::get('Days',[AdminController::class, 'Days']);
+    Route::put('UpdateDays',[AdminController::class, 'UpdateDays']);
 
     // SSS Contribution
     Route::post('SSSRegister',[SSSController::class, 'SSSRegister']);
@@ -78,6 +80,38 @@ Route::middleware(['auth:sanctum', 'isAPIAdmin'])->group(function () {
     Route::get('FetchSalary',[SalaryPeriodController::class, 'FetchSalary']);
     Route::put('SalaryUpdate',[SalaryPeriodController::class, 'SalaryUpdate']);
     Route::delete('SalaryRemove/{id}',[SalaryPeriodController::class, 'SalaryRemove']);
+
+    // Create Employee
+    Route::post('RegisterEmployee',[AdminController::class, 'RegisterEmployee']);
+    
+
+    // Dashboard 
+    Route::get('AdminDashboard',[AdminController::class, 'AdminDashboard']);
+
+
+    // Company Info Config
+    Route::post('RegisterCompanyInfo',[AdminController::class, 'RegisterCompanyInfo']);
+    Route::get('CompanyInfo',[AdminController::class, 'CompanyInfo']);
+    Route::put('UpdateInfo',[AdminController::class, 'UpdateInfo']);
+});
+
+
+
+// Employee
+Route::middleware(['auth:sanctum', 'isAPIEmployee'])->group(function () {
+    Route::get('/employee',function() {
+        return response()->json([
+            "status"        =>      200,
+            "role"          =>      auth()->user()->role,
+        ],200);
+    });
+
+});
+
+
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('logout',[AuthController::class, 'Logout']);
 });
 
 

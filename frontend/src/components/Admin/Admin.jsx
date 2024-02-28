@@ -85,7 +85,7 @@ function Admin() {
             ]
         },
         {
-            label: 'Calendar',
+            label: 'Announcement',
             icon: PrimeIcons.CALENDAR,
             command: () => {
                 history.push(`/admin/calendar/announcements`)
@@ -94,7 +94,9 @@ function Admin() {
     ];
 
     let items_list = [
-        { label: 'Settings', icon: 'pi pi-fw pi-cog', url: '/admin/myaccount' },
+        { label: 'Settings', icon: 'pi pi-fw pi-cog', command: () => {
+            history.push(`/admin/settings/config`)
+        } },
         { label: 'My Account', icon: 'pi pi-fw pi-user', command: () => {
             history.push(`admin/myaccount`)
         } },

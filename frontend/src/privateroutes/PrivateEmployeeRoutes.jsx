@@ -2,15 +2,15 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { Redirect, Route, useHistory } from 'react-router-dom'
 import swal from 'sweetalert';
-import Admin from '../components/Admin/Admin'
+import Employee from '../components/Users/Employee';
 
 function PrivateEmployeeRoutes({ ...rest }) {
     const [Authenticated, setAuthenticated] = useState(false);
     const [loading, setloading] = useState(true);
     const history = useHistory();
     useEffect(() => {
-        axios.get(`/api/checking`).then(res => {
-            if (res.data.status === 200 && res.data.role === 1) {
+        axios.get(`/api/employee`).then(res => {
+            if (res.data.status === 200 && res.data.role === 4) {
                 setAuthenticated(true)
             }
             setloading(false);
@@ -42,10 +42,20 @@ function PrivateEmployeeRoutes({ ...rest }) {
 
         // Forbidden
         if (error.response.status === 403) {
-            // Users
+            // Accountant
             if (error.response.data.token === 2) {
                 swal("Warning", error.response.data.message, "warning");
-                history.push('/user')
+                history.push('/accountant')
+            }
+            // HR
+            else if(error.response.data.token === 3) {
+                swal("Warning",error.response.data.message, 'warning');
+                history.push(`/HR`)
+            }
+            // Admin
+            else if(error.response.data.token === 1) {
+                swal("Warning",error.response.data.message,'warning');
+                history.push(`/admin`);
             }
         }
         // Page Not Found
@@ -66,7 +76,7 @@ function PrivateEmployeeRoutes({ ...rest }) {
         <Route {...rest}
             render={({ props, location }) =>
                 Authenticated ?
-                    (<Admin {...rest} />) :
+                    (<Employee {...rest} />) :
                     (<Redirect to={{ pathname: '/', state: { from: location } }} />)
             }
 

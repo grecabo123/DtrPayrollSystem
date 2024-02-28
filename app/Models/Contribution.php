@@ -5,18 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Employee extends Model
+class Contribution extends Model
 {
     use HasFactory;
 
-    protected $table = "tbl_employee";
+    protected $table = "tbl_contribution";
 
     protected $fillable = [
-        "department_fk",
-        "specific_role",
-        "monthly",
-        "employee_code",
-        "per_day",
+        "sss",
+        "pagibig",
+        "philhealth",
+        "tin",
         "user_fk",
     ];
 }

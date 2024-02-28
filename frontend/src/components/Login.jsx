@@ -4,6 +4,7 @@ import { InputText } from 'primereact/inputtext'
 import { Button } from 'primereact/button'
 import axios from 'axios';
 import swal from 'sweetalert'
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 function Login() {
 
@@ -12,6 +13,7 @@ function Login() {
         password: "",
         error: [],
     });
+    const history = useHistory();
 
     const handleInput = (e) => {
         e.persist();
@@ -27,52 +29,55 @@ function Login() {
             password: LoginData.password,
         };
 
-        axios.post(`/api/Login`, data).then(res => {
-            if (res.data.status === 200) {
-                // admin
-                if (res.data.role === 1) {
-                    localStorage.setItem("auth_token", res.data.token);
-                    localStorage.setItem("auth_id", res.data.id);
-                    localStorage.setItem('auth_name', res.data.name);
-                    swal('Success', res.data.message, 'success')
-                    history.push('/admin');
+        axios.get('/sanctum/csrf-cookie').then(response => {
+            axios.post(`/api/Login`, data).then(res => {
+                if (res.data.status === 200) {
+                    // admin
+                    if (res.data.role === 1) {
+                        localStorage.setItem("auth_token", res.data.token);
+                        localStorage.setItem("auth_id", res.data.id);
+                        localStorage.setItem('auth_name', res.data.name);
+                        history.push('/admin');
+                        
+                        swal('Success', res.data.message, 'success')
+                    }
+                    // Human Resources
+                    else if (res.data.role === 2) {
+                        localStorage.setItem("auth_token", res.data.token);
+                        localStorage.setItem("auth_id", res.data.id);
+                        localStorage.setItem('auth_name', res.data.name);
+                        history.push('/HR');
+                        swal('Success', res.data.message, 'success')
+                    }
+                    // Accountant
+                    else if (res.data.role === 3) {
+                        localStorage.setItem("auth_token", res.data.token);
+                        localStorage.setItem("auth_id", res.data.id);
+                        localStorage.setItem('auth_name', res.data.name);
+                        history.push('/accountant');
+                        swal('Success', res.data.message, 'success')
+                    }
+    
+                    // Employee
+                    else {
+                        localStorage.setItem("auth_token", res.data.token);
+                        localStorage.setItem("auth_id", res.data.id);
+                        localStorage.setItem('auth_name', res.data.name);
+                        history.push('/employee');
+                        swal('Success', res.data.message, 'success')
+                    }
                 }
-                // Human Resources
-                else if (res.data.role === 2) {
-                    localStorage.setItem("auth_token", res.data.token);
-                    localStorage.setItem("auth_id", res.data.id);
-                    localStorage.setItem('auth_name', res.data.name);
-                    swal('Success', res.data.message, 'success')
-                    history.push('/HR');
-                }
-                // Accountant
-                else if (res.data.role === 3) {
-                    localStorage.setItem("auth_token", res.data.token);
-                    localStorage.setItem("auth_id", res.data.id);
-                    localStorage.setItem('auth_name', res.data.name);
-                    swal('Success', res.data.message, 'success')
-                    history.push('/accountant');
-                }
-
-                // Employee
                 else {
-                    localStorage.setItem("auth_token", res.data.token);
-                    localStorage.setItem("auth_id", res.data.id);
-                    localStorage.setItem('auth_name', res.data.name);
-                    swal('Success', res.data.message, 'success')
-                    history.push('/employee');
+                    setLogin({ ...LoginData, error: res.data.error });
                 }
-            }
-            else {
-                setLogin({ ...LoginData, error: res.data.error });
-            }
-        }).catch((error) => {
-            if (error.response.status === 500) {
-                swal("Warning", error.response.statusText, 'warning');
-            }
-        })
-    }
+            }).catch((error) => {
+                if (error.response.status === 500) {
+                    swal("Warning", error.response.statusText, 'warning');
+                }
+            })
+        });
 
+    }
     return (
         <>
             <Navigation />

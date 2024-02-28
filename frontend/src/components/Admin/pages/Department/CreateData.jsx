@@ -76,15 +76,34 @@ function CreateData() {
         return (
             <>
                 <Button 
-                className={DepartmentFetch.status === 1 ? `p-button-sm p-button-danger` : `p-button-sm p-button-info`} 
+                className={DepartmentFetch.status === 1 ? `m-2 p-button-sm p-button-warning` : `m-2 p-button-sm p-button-info`} 
                 label={DepartmentFetch.status === 1 ? "Deactivate" : "Activate"} 
                 data-id={DepartmentFetch.id} 
+                data-indicator={1}
                 data-status={DepartmentFetch.status === 1 ? 0 : 1}
                 onClick={UpdateStatus} />
+
+                <Button className=' m-2 p-button-sm p-button-danger' 
+                    onClick={DeleteData}
+                    label='Delete Department'
+                    data-id={DepartmentFetch.id}
+                />
             </>
         )
     }
 
+    const DeleteData = (e) => {
+        axios.delete(`/api/DeleteDepartment/${e.currentTarget.getAttribute('data-id')}`).then(res => {
+            if(res.data.status === 200) {
+                toast.current.show({severity: "success", summary: "Remove Department", detail: "Successfully"});
+                DepartmentData();
+            }
+        }).catch((error) => {
+            if(error.response.status === 500) {
+                swal("Warning",error.response.statusText,'warning');
+            }
+        })
+    }
     const UpdateStatus = (e) => {
         const data = {
             id: e.currentTarget.getAttribute('data-id'),
