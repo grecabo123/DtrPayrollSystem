@@ -15,6 +15,7 @@ import '../node_modules/bootstrap/dist/js/bootstrap.bundle.js'
 
 import '../node_modules/react-big-calendar/lib/css/react-big-calendar.css';
 import '../node_modules/react-big-calendar/lib/addons/dragAndDrop/styles.css';
+import "../node_modules/gantt-task-react/dist/index.css";
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Router>

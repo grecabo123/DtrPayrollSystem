@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Validator;
 
 class HolidayController extends Controller
 {
-    //
 
     public function AddHoliday (Request $request){
 

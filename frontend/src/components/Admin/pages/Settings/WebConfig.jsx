@@ -10,6 +10,8 @@ import axios from 'axios';
 import swal from 'sweetalert';
 import { Skeleton } from 'primereact/skeleton';
 import { Toast } from 'primereact/toast';
+import TimePeriod from '../Period/TimePeriod';
+import Allowances from '../Period/Allowances';
 
 
 
@@ -191,6 +193,17 @@ function WebConfig() {
                             consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
                             Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
                         </p>
+                    </TabPanel>
+                    <TabPanel header="Allowanes & Time Period">
+                      <div className="row">
+                        <div className="col-lg-12 mb-2">
+                        <Allowances />
+                        </div>
+                        <div className="col-lg-12 mb-2">
+                       <TimePeriod />
+
+                        </div>
+                      </div>
                     </TabPanel>
                 </TabView>
             </Panel>

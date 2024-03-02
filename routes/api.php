@@ -1,10 +1,14 @@
 <?php
 
+use App\Http\Controllers\API\AllowancesController;
 use App\Http\Controllers\API\AnnouncementController;
+use App\Http\Controllers\API\EmailController;
+use App\Http\Controllers\API\EmployeeController;
 use App\Http\Controllers\API\EventController;
 use App\Http\Controllers\API\HolidayController;
 use App\Http\Controllers\API\PhilhealthController;
 use App\Http\Controllers\API\SalaryPeriodController;
+use App\Http\Controllers\API\TimePeriodController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\SSSController;
@@ -29,6 +33,12 @@ Route::get('Announcement',[AnnouncementController::class, 'Announcement']);
 
 // Department
 Route::get('FetchData',[AdminController::class, 'FetchData']);
+
+
+
+// Email Functions
+Route::post('SendEmail',[EmailController::class, 'SendEmail']);
+Route::get('FetchMessage/{id}',[EmailController::class, 'FetchMessage']);
 
 Route::middleware(['auth:sanctum', 'isAPIAdmin'])->group(function () {
     Route::get('/checking',function() {
@@ -93,6 +103,20 @@ Route::middleware(['auth:sanctum', 'isAPIAdmin'])->group(function () {
     Route::post('RegisterCompanyInfo',[AdminController::class, 'RegisterCompanyInfo']);
     Route::get('CompanyInfo',[AdminController::class, 'CompanyInfo']);
     Route::put('UpdateInfo',[AdminController::class, 'UpdateInfo']);
+
+
+
+    // Time Period 
+    Route::get('TimePeriodData',[TimePeriodController::class, 'TimePeriodData']);
+    Route::post('AddTimePeriod',[TimePeriodController::class, 'AddTimePeriod']);
+    Route::delete('RemoveTimeData/{id}',[TimePeriodController::class, 'RemoveTimeData']);
+    Route::put('UpdateTimeData',[TimePeriodController::class, 'UpdateTimeData']);
+
+    // Allowances
+    Route::get('AllowanceData',[AllowancesController::class, 'AllowanceData']);
+    Route::post('AddAllowances',[AllowancesController::class, 'AddAllowances']);
+    Route::put('UpdateAllowanceData',[AllowancesController::class, 'UpdateAllowanceData']);
+    Route::delete('RemoveAllowanceData/{id}',[AllowancesController::class, 'RemoveAllowanceData']);
 });
 
 
@@ -105,6 +129,25 @@ Route::middleware(['auth:sanctum', 'isAPIEmployee'])->group(function () {
             "role"          =>      auth()->user()->role,
         ],200);
     });
+
+
+    // Employee Info
+
+    Route::get('PersonDetails/{id}', [EmployeeController::class, 'PersonDetails']);
+
+
+    
+});
+
+
+Route::middleware(['auth:sanctum','isAPIHR'])->group(function() {
+    Route::get('/hr',function() {
+        return response()->json([
+            "status"            =>          200,
+            "role"              =>          auth()->user()->role(),
+        ],200);
+    });
+
 
 });
 

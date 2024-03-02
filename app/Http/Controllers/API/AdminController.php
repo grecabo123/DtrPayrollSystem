@@ -23,7 +23,7 @@ class AdminController extends Controller
         $employee = User::join('tbl_employee','tbl_employee.user_fk','=','users.id')
                 ->join('tbl_company_info','tbl_company_info.id','=','tbl_employee.company_fk')
                 ->selectRaw('users.first_name,users.id,users.name,users.email,tbl_employee.specific_role,
-                users.role,users.status,users.created_at,tbl_company_info.company_code,tbl_employee.employee_code')
+                users.role,users.status,users.created_at,tbl_company_info.company_code,tbl_employee.employee_code,tbl_employee.image_capture')
             ->orderBy('users.first_name')->where('users.role',"!=",1)->get();
 
         return response()->json([
@@ -71,7 +71,6 @@ class AdminController extends Controller
             $dept->save();
 
             $logs = new ActivityLogs;
-
             $logs->description = $request->department." "."Created";
             $logs->user_fk = $request->id;
             $logs->save();
@@ -203,6 +202,7 @@ class AdminController extends Controller
 
             $employee = new Employee;
             $employee->employee_code = $request->year.'-'.'00'.$user->id;
+            $employee->image_capture = $request->capture;
             $employee->department_fk = $request->department;
             $employee->specific_role = $request->specific_role;
             $employee->monthly = $request->monthly;

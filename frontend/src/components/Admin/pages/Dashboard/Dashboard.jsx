@@ -15,6 +15,7 @@ import { Tag } from 'primereact/tag';
 import { Button } from 'primereact/button';
 import { PrimeIcons, FilterMatchMode } from 'primereact/api';
 import { InputText } from 'primereact/inputtext';
+import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 
 
 
@@ -69,7 +70,7 @@ function Dashboard() {
     const ActionByn = (Employee) => {
         return (
             <>
-                <Button className='p-button-info p-button-sm' label='Details' icon={PrimeIcons.USER} />
+                <Link to={`/admin/employee/details/refid=${Employee.id}`}><Button className='p-button-info p-button-sm' label='Details' icon={PrimeIcons.USER} /></Link>
             </>
         )
     }
@@ -98,6 +99,17 @@ function Dashboard() {
         return (
             <>
                 <span>{Employee.company_code}{Employee.employee_code}</span>
+            </>
+        )
+    }
+
+    const Image_Name = (Employee) => {
+        return (
+            <>
+                <div className="d-flex align-items-center gap-2">
+                    <img src={Employee.image_capture} width={50} height={40} style={{ borderRadius: "50%" }} alt="" />
+                    <span>{Employee.name}</span>
+                </div>
             </>
         )
     }
@@ -188,8 +200,8 @@ function Dashboard() {
                             ease: [0, 0.71, 0.2, 1.01]
                         }}
                     >
-                        <DataTable title='Employee Data'  emptyMessage="No Employee Found." header={header} dataKey='id' value={Employee} filters={filters} globalFilterFields={['name', 'specific_role','employee_code']} paginator paginatorLeft rows={10}>
-                            <Column field='name' filterField='name' header="Name of Employee"></Column>
+                        <DataTable title='Employee Data' loading={loading}   emptyMessage="No Employee Found." header={header} dataKey='id' value={Employee} filters={filters} globalFilterFields={['name', 'specific_role','employee_code']} paginator paginatorLeft rows={10}>
+                            <Column field='name' body={Image_Name} filterField='name' header="Name of Employee"></Column>
                             <Column field='company_code' filterField='employee_code' body={EmployeeCode} header="Employee ID"></Column>
                             <Column field='role' body={AccountRole} header="Account Role"></Column>
                             <Column field='specific_role' filterField='specific_role' header="Specific Role"></Column>

@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import { Link, Redirect, Route, Switch, useHistory } from 'react-router-dom/cjs/react-router-dom.min'
-import { FcCalendar, FcSurvey, FcOpenedFolder, FcHome, FcSms, FcPositiveDynamic, FcManager, FcHighPriority, FcCheckmark, FcFolder, FcFeedback, FcBiohazard, FcAssistant, FcBarChart, FcFactory, FcLineChart, FcInfo, FcDeployment, FcCollaboration, FcSettings, FcPlanner, FcSportsMode, FcFile } from 'react-icons/fc'
+import { FcCalendar, FcSurvey, FcOpenedFolder, FcHome, FcSms, FcPositiveDynamic, FcManager, FcHighPriority, FcCheckmark, FcFolder, FcFeedback, FcBiohazard, FcAssistant, FcBarChart, FcFactory, FcLineChart, FcInfo, FcDeployment, FcCollaboration, FcSettings, FcPlanner, FcSportsMode, FcFile, FcComments } from 'react-icons/fc'
 import { FaArchive, FaBars, FaBox, FaBuilding, FaCalculator, FaCalendar, FaCalendarCheck, FaCalendarPlus, FaCaretDown, FaCaretRight, FaChartLine, FaClock, FaCogs, FaDatabase, FaDeskpro, FaDesktop, FaDollarSign, FaEnvelope, FaFolder, FaFolderOpen, FaHeart, FaHome, FaMoneyBill, FaPen, FaPenAlt, FaStore, FaUserAlt, FaUsers } from 'react-icons/fa'
 import axios from 'axios'
 import swal from 'sweetalert'
@@ -95,7 +95,7 @@ function Employee() {
     let items_list = [
         { label: 'Settings', icon: 'pi pi-fw pi-cog', url: '/admin/myaccount' },
         { label: 'My Account', icon: 'pi pi-fw pi-user', command: () => {
-            history.push(`admin/myaccount`)
+            history.push(`/employee/profile`)
         } },
         { label: <span className='text-danger fw-bold' onClick={Logout}>Logout</span>, icon: 'pi pi-fw pi-power-off' },
     ];
@@ -125,23 +125,26 @@ function Employee() {
                         <FcDeployment className='nav-icon' />Employee Data</a>
                     </li>
                     <div class="collapse" id='product'>
-                        <li class="nav-item"><Link class="nav-link" to="/employee/product"><FcOpenedFolder className='nav-icon' />DTR</Link></li>
-                        <li class="nav-item"><Link class="nav-link" to="/employee/product"><FcOpenedFolder className='nav-icon' />Schedule</Link></li>
+                        <li class="nav-item"><Link class="nav-link" to="/employee/attendance/dtr"><FcOpenedFolder className='nav-icon' />DTR</Link></li>
+                        <li class="nav-item"><Link class="nav-link" to="/employee/attendance/schedule"><FcOpenedFolder className='nav-icon' />Schedule</Link></li>
                     </div>
+                    <li class="nav-item"><Link class="nav-link" to="/employee/message/inbox">
+                        <FcComments className='nav-icon' /> Messages</Link></li>
+               
 
                     <li class="nav-title">Request</li>
                     <li class="nav-group"><a class="nav-link nav-group-toggle" data-bs-toggle="collapse" data-bs-target="#forms">
                         <FcFolder className='nav-icon' />Forms</a>
                     </li>
                     <div class="collapse" id='forms'>
-                        <li class="nav-item"><Link class="nav-link" to="/employee/calendar/create"><span className='nav-icon' />Sick Report</Link></li>
-                        <li class="nav-item"><Link class="nav-link" to="/employee/calendar/schedule"><span className='nav-icon' />Leave Report</Link></li>
-                        <li class="nav-item"><Link class="nav-link" to="/employee/calendar/days"><span className='nav-icon' />Resignation Report</Link></li>
+                        <li class="nav-item"><Link class="nav-link" to="/employee/request/sick"><span className='nav-icon' />Sick Report</Link></li>
+                        <li class="nav-item"><Link class="nav-link" to="/employee/request/leave"><span className='nav-icon' />Leave Report</Link></li>
+                        <li class="nav-item"><Link class="nav-link" to="/employee/request/resign"><span className='nav-icon' />Resignation Report</Link></li>
                     </div>
 
 
                     <li class="nav-title">Reports</li>
-                    <li class="nav-item"><Link class="nav-link" to="/employee/distribute"><FcCollaboration className='nav-icon' />PaySlip</Link></li>
+                    <li class="nav-item"><Link class="nav-link" to="/employee/payslip/payroll"><FcCollaboration className='nav-icon' />PaySlip</Link></li>
 
 
                     {/* History */}

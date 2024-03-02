@@ -28,7 +28,6 @@ function Announcements() {
     const [endData, setendData] = useState()
     const [Details, setDetails] = useState([])
 
-    console.log(pick);
 
     useEffect(() => {
         axios.get(`/api/FetchData`).then(res => {

@@ -46,9 +46,6 @@ function RegisterEmployee() {
         setRegister({...Register, [e.target.name] : e.target.value});
     }
 
-
-
-
     useEffect(() => {
         axios.get(`/api/FetchDataStatus`).then(res => {
             if (res.data.status === 200) {
@@ -69,16 +66,22 @@ function RegisterEmployee() {
         )
     })
 
-    const capture = async () => {
+    const capture = async (e) => {
+        e.preventDefault();
         setcapture(false)
         const imageSrc = webcamRef.current.getScreenshot();
-        const blob = await fetch(imageSrc).then((res) => res.blob());
-        setCapturedImage(blob);
+        setCapturedImage(imageSrc);
+        setcapture(true)
+
       };
-    const Done = () => {
+    const Done = (e) => {
+        e.preventDefault();
         setcapture(true)
     }
 
+    const RemoveImage = () => {
+        setCapturedImage("")
+    }
 
     const RegisterEmployee = (e) => {
         e.preventDefault();
@@ -103,6 +106,7 @@ function RegisterEmployee() {
         form.append('department',deparmtnepick);
         form.append('year',moment().format('YYYY'));
         form.append('user_fk',localStorage.getItem('auth_id'));
+        form.append('capture',capturedImage);
 
         axios.post(`/api/RegisterEmployee`,form).then(res => {
             if(res.data.status === 200) {
@@ -110,6 +114,7 @@ function RegisterEmployee() {
                 document.getElementById('form').reset();
                 setDepartmentpick([]);
                 setSalary()
+                setCapturedImage("");
             }
         }).catch((error) => {
             if(error.response.status === 500) {
@@ -117,6 +122,7 @@ function RegisterEmployee() {
             }
         })
     }
+
 
 
     return (
@@ -127,6 +133,14 @@ function RegisterEmployee() {
             <div className="row">
                 <Panel header="Register Employee">
                     <Toast ref={toast} />
+                    <div className="d-flex justify-content-end">
+                    <Button onClick={capture} className='p-button-info me-2 p-button-sm' icon="pi pi-camera" />
+                    {
+                        capturedImage == "" ? "" : 
+                    <Button className='p-button-danger p-button-sm me-2' icon="pi pi-trash" onClick={RemoveImage} />
+                    }
+                    {/* <Button className='p-button-danger p-button-sm me-2' icon="pi pi-times" onClick={Done} /> */}
+                    </div>
                     <form onSubmit={RegisterEmployee} id='form'>
                         <Divider>
                             <span className='p-tag'>Personal Details</span>
@@ -143,12 +157,13 @@ function RegisterEmployee() {
                                     width={200}
                                 />
                                 }
-                                <button onClick={capture}>Capture</button>
-                                <button onClick={Done}>Done</button>
+                              
+                                {/* <button onClick={capture}>Capture</button>
+                                <button onClick={Done}>Done</button> */}
 
                                 {capturedImage && (
-                                    <div>
-                                        <img src={URL.createObjectURL(capturedImage)} alt="Captured" />
+                                    <div className=''>
+                                        <img src={capturedImage} className='w-100' alt="Captured" />
                                     </div>
                                 )}
                             </div>

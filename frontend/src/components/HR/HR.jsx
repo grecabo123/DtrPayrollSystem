@@ -10,8 +10,7 @@ import { PrimeIcons } from 'primereact/api'
 import { Avatar } from 'primereact/avatar'
 import { Menu } from 'primereact/menu'
 
-function Admin() {
-
+function HR() {
 
     const menu = useRef(null);
 
@@ -214,7 +213,7 @@ function Admin() {
                                 )
                             })
                         }
-                        <Redirect from='/admin' to="/admin/dashboard" />
+                        <Redirect from='/hr' to="/hr/dashboard" />
                     </Switch>
                 </div>
             </div>
@@ -222,4 +221,4 @@ function Admin() {
     )
 }
 
-export default Admin
+export default HR

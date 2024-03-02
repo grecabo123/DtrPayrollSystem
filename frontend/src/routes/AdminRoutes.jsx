@@ -10,6 +10,8 @@ import RegisterEmployee from "../components/Admin/pages/Employee/RegisterEmploye
 import Legal from "../components/Admin/pages/Holidays/Legal";
 import Special from "../components/Admin/pages/Holidays/Special";
 import ActivityLogs from "../components/Admin/pages/Logs/ActivityLogs";
+import Inbox from "../components/Admin/pages/Message/Inbox";
+import Sent from "../components/Admin/pages/Message/Sent";
 import CreateSchedule from "../components/Admin/pages/Schedule/CreateSchedule";
 import NumberofDuty from "../components/Admin/pages/Schedule/NumberofDuty";
 import SalaryPeriod from "../components/Admin/pages/Schedule/SalaryPeriod";
@@ -35,6 +37,8 @@ const AdminRoutes = [
     {path: "/admin/calendar/salary", exact: true, name: "Salary", component: SalaryPeriod},
     {path: "/admin/calendar/schedule", exact: true, name: "Schedule", component: ScheduleData},
     {path: "/admin/settings/config", exact: true, name: "Config", component: WebConfig},
+    {path: "/admin/message/inbox", exact: true, name: "Inbox", component: Inbox},
+    {path: "/admin/message/sent", exact: true, name: "Sent", component: Sent},
 ];
 
 export default AdminRoutes;

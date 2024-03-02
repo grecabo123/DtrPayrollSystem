@@ -6,6 +6,7 @@ import Login from './components/Login';
 import PrimeReact from 'primereact/api';
 import PrivateAdminRoutes from './privateroutes/PrivateAdminRoutes';
 import PrivateEmployeeRoutes from './privateroutes/PrivateEmployeeRoutes';
+import PrivateHumanResourceRoutes from './privateroutes/PrivateHumanResourceRoutes';
 
 
 axios.defaults.baseURL = "http://127.0.0.1:8000";
@@ -32,9 +33,11 @@ function App() {
 
                     {/* Admin */}
                     <PrivateAdminRoutes path="/admin" name="admin" />
-
                     {/* Employee */}
                     <PrivateEmployeeRoutes path="/employee" name="employee" />
+
+                    {/* Human Resources */}
+                    <PrivateHumanResourceRoutes path="/hr" name="hr" />
                 </Switch>
             </Router>
     )
