@@ -23,7 +23,7 @@ class EmployeeController extends Controller
                                 tbl_employee.employee_code,tbl_employee.specific_role,tbl_employee.monthly,tbl_employee.per_day,
                                 tbl_contribution.sss,tbl_contribution.pagibig,tbl_contribution.philhealth,tbl_contribution.tin,
                                 tbl_department.department,tbl_person_details.current_adr,tbl_person_details.perma_adr,tbl_person_details.contact,
-                                tbl_person_details.birthdate,tbl_company_info.company_code,tbl_employee.image_capture')
+                                tbl_person_details.birthdate,tbl_company_info.company_code,tbl_employee.image_capture,users.id')
                                     ->where('users.id',$id)
                                         ->first();
 
@@ -34,5 +34,18 @@ class EmployeeController extends Controller
     }
 
 
+    public function ListofEmployee(){
+
+        $employee = User::join('tbl_employee','tbl_employee.user_fk','=','users.id')
+                ->join('tbl_company_info','tbl_company_info.id','=','tbl_employee.company_fk')
+                ->selectRaw('users.first_name,users.id,users.name,users.email,tbl_employee.specific_role,
+                users.role,users.status,users.created_at,tbl_company_info.company_code,tbl_employee.employee_code,tbl_employee.image_capture')
+            ->orderBy('users.first_name')->where('users.role',"!=",1)->get();
+
+        return response()->json([
+            "status"            =>          200,
+            "employee"          =>          $employee,
+        ]);
+    }
   
 }

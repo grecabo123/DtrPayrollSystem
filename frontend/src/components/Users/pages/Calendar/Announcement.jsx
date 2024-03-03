@@ -7,7 +7,6 @@ import { Calendar, momentLocalizer } from 'react-big-calendar'
 
 function Announcement() {
 
-    
     const localizer = momentLocalizer(moment)
     const [Accounts, setAccount] = useState([]);
     const handleSelectSlot = useCallback(({ start, end }) => {

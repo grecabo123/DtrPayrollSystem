@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { Redirect, Route, useHistory } from 'react-router-dom'
 import swal from 'sweetalert';
-import Employee from '../components/Users/Employee';
+import HR from '../components/HR/HR';
 
 function PrivateHumanResourceRoutes({ ...rest }) {
     const [Authenticated, setAuthenticated] = useState(false);
@@ -76,7 +76,7 @@ function PrivateHumanResourceRoutes({ ...rest }) {
         <Route {...rest}
             render={({ props, location }) =>
                 Authenticated ?
-                    (<Employee {...rest} />) :
+                    (<HR {...rest} />) :
                     (<Redirect to={{ pathname: '/', state: { from: location } }} />)
             }
 

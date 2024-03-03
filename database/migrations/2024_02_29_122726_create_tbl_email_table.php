@@ -15,6 +15,7 @@ class CreateTblEmailTable extends Migration
     {
         Schema::create('tbl_email', function (Blueprint $table) {
             $table->id();
+            $table->string('message_code');
             $table->string('subject');
             $table->longText('text');
             $table->unsignedBigInteger('user_fk_from');

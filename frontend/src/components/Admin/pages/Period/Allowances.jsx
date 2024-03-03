@@ -203,7 +203,7 @@ function Allowances() {
                                 <span className='text-danger'>{Allowances.error.name_allowance}</span>
                             </div>
                             <div className="mt-3">
-                                <Button className='w-100 p-button-sm p-button-info' label='Add Time Period' icon={PrimeIcons.PLUS} />
+                                <Button className='w-100 p-button-sm p-button-info' label='Add Allowance' icon={PrimeIcons.PLUS} />
                             </div>
                         </div>
                     </div>

@@ -46,7 +46,7 @@ function Login() {
                         localStorage.setItem("auth_token", res.data.token);
                         localStorage.setItem("auth_id", res.data.id);
                         localStorage.setItem('auth_name', res.data.name);
-                        history.push('/HR');
+                        history.push('/hr');
                         swal('Success', res.data.message, 'success')
                     }
                     // Accountant

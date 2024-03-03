@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Models\ActivityLogs;
 use App\Models\Allowances;
+use App\Models\EmployeeAllowances;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -78,5 +79,46 @@ class AllowancesController extends Controller
                 "status"            =>          200,
             ]);
         }
+    }
+
+    public function AllowanceEmployee ($id){
+
+        $data = EmployeeAllowances::join('tbl_allowances','tbl_allowances.id','=','tbl_employee_allowances.allowance_fk')->where('user_fk',$id)->get();
+
+        return response()->json([
+            "status"            =>          200,
+            "data"              =>          $data,
+        ]);
+    }
+
+    public function AddAllowanceEmployee (Request $request){
+
+        $data = EmployeeAllowances::where('allowance_fk',$request->allowances_id)
+            ->where('user_fk',$request->user_id)->first();
+
+        if($data){
+            return response()->json([
+                "status"            =>          501,
+            ]);
+        }
+        else{
+
+            $allowance = new EmployeeAllowances;
+
+            $allowance->amount = $request->amount;
+            $allowance->allowance_fk = $request->allowances_id;
+            $allowance->user_fk = $request->user_id;
+            $allowance->save();
+
+            $logs = new ActivityLogs;
+            $logs->description = "Added Allowances"." ".$request->name;
+            $logs->user_fk = $request->user_fk;
+            $logs->save();
+
+            return response()->json([
+                "status"            =>          200,
+            ]);
+        }
+
     }
 }

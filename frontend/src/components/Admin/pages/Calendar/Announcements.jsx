@@ -27,17 +27,19 @@ function Announcements() {
     const [startData, setstartData] = useState()
     const [endData, setendData] = useState()
     const [Details, setDetails] = useState([])
+    const [AddressData, setAddress] = useState([])
+    const [Departmentpick, setDepartmentPick] = useState([])
 
 
     useEffect(() => {
         axios.get(`/api/FetchData`).then(res => {
-            if(res.data.status === 200) {
+            if (res.data.status === 200) {
                 setDepartment(res.data.data);
             }
             setloading()
         }).catch((error) => {
-            if(error.response.status === 500) {
-                swal("Warning",error.response.statusText,'warning');
+            if (error.response.status === 500) {
+                swal("Warning", error.response.statusText, 'warning');
             }
         })
     }, []);
@@ -56,7 +58,7 @@ function Announcements() {
 
     const list_department = Departments.map((data) => {
         return (
-            {label: data.department, value: data.id}
+            { label: data.department, value: data.id }
         )
     })
 
@@ -83,10 +85,18 @@ function Announcements() {
     }
 
     const list_pick = [
+        { label: "Memo", value: 1 },
+        { label: "Meeting", value: 2 },
+    ]
+
+    const address_to = [
         { label: "All Users", value: 1 },
         { label: "Department", value: 2 },
         { label: "Specific Person", value: 3 },
     ]
+
+
+    console.log(startData + '' + endData);
 
 
     return (
@@ -107,69 +117,94 @@ function Announcements() {
 
             <Dialog position='top' draggable={false} header="Create Annoucement" visible={visible} onHide={onHide} breakpoints={{ '960px': '75vw', '640px': '100vw' }} style={{ width: '50vw' }}>
                 <div className="container">
-                    <Dropdown value={pick} onChange={(e) => setpick(e.value)} options={list_pick} className='mb-4 w-100 p-inputtext-sm' placeholder='Type of Announcement' />
-                {
-                    pick == null ? ""
-                        :
-                        pick == 1 ? <form onSubmit={PostAnnoucment} id='reset_form'>
-                            <center><h4>All Users</h4></center>
-                            <div className="row">
-                                <div className="col-lg-6 col-sm-12 mb-2">
-                                    <label htmlFor="" className="form-label">
-                                        Title
-                                    </label>
-
-                                    <InputText className='w-100' onChange={handleinput} name='title' />
-                                </div>
-
-                                <div className="col-lg-6 col-sm-12 mb-2">
-                                    <label htmlFor="" className="form-label">
-                                        Date:
-                                    </label>
-                                    <InputText className='w-100' value={startData} disabled readOnly />
-                                </div>
-                                <div className="col-lg-12 mb-2">
-
-                                    <InputTextarea className='w-100' name='description' onChange={handleinput} style={{ resize: "none" }} rows={5} cols={5} />
-                                </div>
-                                <div className="mt-3">
-                                    <Button className='p-button-sm p-button-info' label='Create' />
-                                </div>
+                    <form>
+                        <div className="row">
+                            <div className="col-lg-12 mb-1">
+                                <label htmlFor="" className="form-label">
+                                    Type of Announcement
+                                </label>
+                                <Dropdown value={pick} onChange={(e) => setpick(e.value)} options={list_pick} className='mb-4 w-100 p-inputtext-sm' placeholder='Choose Announcement' />
                             </div>
-                        </form>
-                            : pick == 2 ?
-                                <form onSubmit={PostAnnoucment} id='reset_form'>
-                                <center><h4>Department</h4></center>
-
-                                    <div className="row">
-                                        <div className="col-lg-12 mb-2">
-                                            <MultiSelect placeholder='Departments' className='w-100 p-inputtext-sm' filter options={list_department} />
-                                        </div>
-                                        <div className="col-lg-6 col-sm-12 mb-2">
+                            <div className="col-lg-12 mb-1">
+                                <label htmlFor="" className="form-label">
+                                    Address To
+                                </label>
+                                <Dropdown value={AddressData} options={address_to} onChange={(e) => setAddress(e.value)} className='w-100 p-inputtext-sm' placeholder='Choose to Address' />
+                            </div>
+                            {
+                                pick == 1 ?
+                                    <>
+                                        {
+                                            AddressData == 1 ? "" : AddressData == 2 ?
+                                                <div className="col-lg-12 mb-2">
+                                                    <label htmlFor="" className="form-label">
+                                                        Department
+                                                    </label>
+                                                    <MultiSelect value={Departmentpick} onChange={(e) => setDepartmentPick(e.value)} display='chip' className='w-100 p-inputtext-sm' filter options={list_department} placeholder='List of Department' />
+                                                </div>
+                                                : <div className="col-lg-12 mb-2">
+                                                    <label htmlFor="" className="form-label">
+                                                        List of Employee
+                                                    </label>
+                                                    <MultiSelect display='chip' className='w-100 p-inputtext-sm' filter placeholder='List of Employee' />
+                                                </div>
+                                        }
+                                        <div className="col-lg-6 mb-2">
                                             <label htmlFor="" className="form-label">
                                                 Title
                                             </label>
-
-                                            <InputText className='w-100' onChange={handleinput} name='title' />
+                                            <InputText className='w-100' name='title' />
                                         </div>
-
-                                        <div className="col-lg-6 col-sm-12 mb-2">
+                                        <div className="col-lg-6 mb-2">
                                             <label htmlFor="" className="form-label">
-                                                Date:
+                                                Date
                                             </label>
-                                            <InputText className='w-100' value={startData} disabled readOnly />
+                                            <InputText className='w-100' name='title' value={startData} readOnly />
                                         </div>
                                         <div className="col-lg-12 mb-2">
+                                            <label htmlFor="" className="form-label">
+                                                Message
+                                            </label>
+                                            <InputTextarea className='w-100' rows={5} cols={5} style={{ resize: "none" }} />
+                                        </div>
 
-                                            <InputTextarea className='w-100' name='description' onChange={handleinput} style={{ resize: "none" }} rows={5} cols={5} />
-                                        </div>
-                                        <div className="mt-3">
-                                            <Button className='p-button-sm p-button-info' label='Create' />
-                                        </div>
-                                    </div>
-                                </form>
-                                : ""
-                }
+                                    </>
+                                    :
+                                    pick == 2 ?
+                                        <>
+                                            {
+                                                AddressData == 1 ? "" : AddressData == 2 ?
+                                                    <div className="col-lg-12 mb-2">
+                                                        <label htmlFor="" className="form-label">
+                                                            Department
+                                                        </label>
+                                                        <Dropdown className='w-100 p-inputtext-sm' filter placeholder='Choose Department' />
+                                                    </div>
+                                                    : <div className="col-lg-12 mb-2">
+                                                        <MultiSelect className='w-100 p-inputtext-sm' filter />
+                                                    </div>
+                                            }
+                                            <div className="col-lg-12 mb-2">
+                                                <label htmlFor="" className="form-label">
+                                                    Title
+                                                </label>
+                                                <InputText className='w-100 p-inputtext-sm' />
+                                            </div>
+                                            <div className="col-lg-12 mb-2">
+                                                <label htmlFor="" className="form-label">
+                                                    Meeting Link
+                                                </label>
+                                                <InputText placeholder='' className='w-100 p-inputtext-sm' />
+                                            </div>
+                                        </>
+                                        :
+                                        ""
+                            }
+                            <div className="">
+                                <Button className='w-100 p-button-info' label='Post Annoucement' />
+                            </div>
+                        </div>
+                    </form>
                 </div>
 
 

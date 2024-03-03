@@ -114,6 +114,8 @@ function Dashboard() {
         )
     }
 
+    
+
     return (
         <div className='container-fluid'>
             <div className="row">
@@ -209,7 +211,6 @@ function Dashboard() {
                             <Column field='created_at' body={DateFormat} header="Employee Registered"></Column>
                             <Column field='id' body={ActionByn} header="Actions"></Column>
                         </DataTable>
-
                     </motion.div>
                 </div>
                 <div className="col-lg-3 mb-2">
