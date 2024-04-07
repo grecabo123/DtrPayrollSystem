@@ -9,6 +9,7 @@ import { Button } from 'primereact/button'
 import { Dropdown } from 'primereact/dropdown'
 import { MultiSelect } from 'primereact/multiselect'
 import axios from 'axios'
+import swal from 'sweetalert'
 
 
 function Announcements() {
@@ -18,6 +19,8 @@ function Announcements() {
     const [myEvents, setEvents] = useState({
         title: "",
         description: "",
+        meeting_link: "",
+        error: [],
     })
     const [Departments, setDepartment] = useState([]);
     const [pick, setpick] = useState(null)
@@ -29,12 +32,16 @@ function Announcements() {
     const [Details, setDetails] = useState([])
     const [AddressData, setAddress] = useState([])
     const [Departmentpick, setDepartmentPick] = useState([])
-
+    const [ListUsers, setList] = useState([])
+    const [UserPick, setUserPick] = useState([]);
+    const [btnloading, setBtnloadng] = useState(false)
+    const [fileupload, setFile] = useState([]);
 
     useEffect(() => {
-        axios.get(`/api/FetchData`).then(res => {
+        axios.get(`/api/FetchDataAll`).then(res => {
             if (res.data.status === 200) {
                 setDepartment(res.data.data);
+                setList(res.data.users);
             }
             setloading()
         }).catch((error) => {
@@ -50,6 +57,10 @@ function Announcements() {
         setVisible(false)
     }
 
+    const handleupload = (e) => {
+        setFile({file_upload: e.target.files[0]})
+    }
+
     const events = Accounts.map((data) => {
         return (
             { id: data.id, title: data.title, start: data.date_annoucment, end: data.date_annoucment, text: data.description }
@@ -59,6 +70,12 @@ function Announcements() {
     const list_department = Departments.map((data) => {
         return (
             { label: data.department, value: data.id }
+        )
+    })
+
+    const list_users = ListUsers.map((data) => {
+        return (
+            { label: data.name, img: data.image_capture, value: data.id }
         )
     })
 
@@ -80,9 +97,7 @@ function Announcements() {
         setEvents({ ...myEvents, [e.target.name]: e.target.value });
     }
 
-    const PostAnnoucment = (e) => {
-        e.preventDefault();
-    }
+    
 
     const list_pick = [
         { label: "Memo", value: 1 },
@@ -96,7 +111,48 @@ function Announcements() {
     ]
 
 
-    console.log(startData + '' + endData);
+    const Userwithimage = (option) => {
+        return (
+            <div className="d-flex align-items-center">
+                <img className='me-2' alt={option.name} src={option.img} style={{ width: '30px', borderRadius: "50%" }} />
+                <div>{option.label}</div>
+            </div>
+        )
+    }
+
+
+    const CreateAnnountme = (e) => {
+        e.preventDefault();
+
+        setBtnloadng(true)
+        const data = new FormData;
+
+        data.append('title',myEvents.title);
+        data.append('meeting_link',myEvents.meeting_link);
+        data.append('description',myEvents.description);
+        data.append('type_annoucement',pick);
+        data.append('address_to',AddressData);
+        data.append('file_upload',fileupload.file_upload);
+
+        axios.post(`/api/CreateAnnounement`,data).then(res => {
+            if(res.data.status === 200) {
+                setBtnloadng(false)
+
+            }
+            else{
+                setEvents({...myEvents, error: res.data.error})
+                setBtnloadng(false)
+
+            }
+        }).catch((error) => {   
+            if(error.response.status === 500){
+                swal("Warning",error.response.statusText,'warning')
+                setBtnloadng(false)
+
+            }
+        })
+
+    }
 
 
     return (
@@ -117,13 +173,14 @@ function Announcements() {
 
             <Dialog position='top' draggable={false} header="Create Annoucement" visible={visible} onHide={onHide} breakpoints={{ '960px': '75vw', '640px': '100vw' }} style={{ width: '50vw' }}>
                 <div className="container">
-                    <form>
+                    <form onSubmit={CreateAnnountme} id='form'>
                         <div className="row">
                             <div className="col-lg-12 mb-1">
                                 <label htmlFor="" className="form-label">
                                     Type of Announcement
                                 </label>
                                 <Dropdown value={pick} onChange={(e) => setpick(e.value)} options={list_pick} className='mb-4 w-100 p-inputtext-sm' placeholder='Choose Announcement' />
+                                <small>{myEvents.error.type_annoucement}</small>
                             </div>
                             <div className="col-lg-12 mb-1">
                                 <label htmlFor="" className="form-label">
@@ -146,14 +203,15 @@ function Announcements() {
                                                     <label htmlFor="" className="form-label">
                                                         List of Employee
                                                     </label>
-                                                    <MultiSelect display='chip' className='w-100 p-inputtext-sm' filter placeholder='List of Employee' />
+                                                    <MultiSelect value={UserPick} itemTemplate={Userwithimage} options={list_users} onChange={(e) => setUserPick(e.value)} display='chip' className='w-100 p-inputtext-sm' filter placeholder='List of Employee' />
                                                 </div>
                                         }
                                         <div className="col-lg-6 mb-2">
                                             <label htmlFor="" className="form-label">
                                                 Title
                                             </label>
-                                            <InputText className='w-100' name='title' />
+                                            <InputText onChange={handleinput} className='w-100' name='title' />
+                                            <small className='text-danger'>{myEvents.error.title}</small>
                                         </div>
                                         <div className="col-lg-6 mb-2">
                                             <label htmlFor="" className="form-label">
@@ -161,11 +219,17 @@ function Announcements() {
                                             </label>
                                             <InputText className='w-100' name='title' value={startData} readOnly />
                                         </div>
+                                         <div className="col-lg-6 mb-2">
+                                            <label htmlFor="" className="form-label">
+                                                Document File
+                                            </label>
+                                            <InputText type='file' onChange={handleupload} name='file_upload' className='w-100' />
+                                        </div>
                                         <div className="col-lg-12 mb-2">
                                             <label htmlFor="" className="form-label">
                                                 Message
                                             </label>
-                                            <InputTextarea className='w-100' rows={5} cols={5} style={{ resize: "none" }} />
+                                            <InputTextarea onChange={handleinput} name='description' className='w-100' rows={5} cols={5} style={{ resize: "none" }} />
                                         </div>
 
                                     </>
@@ -194,7 +258,7 @@ function Announcements() {
                                                 <label htmlFor="" className="form-label">
                                                     Meeting Link
                                                 </label>
-                                                <InputText placeholder='' className='w-100 p-inputtext-sm' />
+                                                <InputText placeholder='http://' value='' className='w-100 p-inputtext-sm' />
                                             </div>
                                         </>
                                         :

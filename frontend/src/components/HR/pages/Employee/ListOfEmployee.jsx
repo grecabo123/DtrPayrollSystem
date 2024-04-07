@@ -9,7 +9,7 @@ import { InputText } from 'primereact/inputtext';
 import { Tag } from 'primereact/tag';
 import { Badge } from 'primereact/badge';
 import moment from 'moment';
-import { Link } from 'react-router-dom/cjs/react-router-dom.min';
+import { Link, useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import { Button } from 'primereact/button';
 
 function ListOfEmployee() {
@@ -24,6 +24,7 @@ function ListOfEmployee() {
         specific_role: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
         employee_code: {value: null, matchMode: FilterMatchMode.STARTS_WITH},
     })
+    const history = useHistory();
 
     useEffect(() => {
         axios.get(`/api/ListofEmployee`).then(res => {
@@ -68,9 +69,13 @@ function ListOfEmployee() {
         return (
             <div>
                 <Link className="m-2" to={`/hr/employee/details/refid=${Employee.id}`}><Button className='p-button-success p-button-sm' label='Details' icon={PrimeIcons.USER} /></Link>
-                <Button className='m-2 p-button-sm p-button-warning' label='Feedback' />
+                <Button className='m-2 p-button-sm p-button-warning' data-id={Employee.id} onClick={Feedback} label='Feedback' />
             </div>
         )
+    }
+
+    const Feedback = (e) => {
+        history.push(`/hr/employee/feedback/refid=${e.currentTarget.getAttribute('data-id')}`)
     }
 
     const onGlobalFilterChange = (e) => {

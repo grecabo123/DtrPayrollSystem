@@ -28,7 +28,7 @@ function CreateDepartment() {
 
 
     const DepartmentData = () => {
-        axios.get(`/api/FetchData`).then(res => {
+        axios.get(`/api/FetchDataAll`).then(res => {
             if (res.data.status === 200) {
                 setFetch(res.data.data)
             }

@@ -12,6 +12,9 @@ import { Skeleton } from 'primereact/skeleton';
 import { Toast } from 'primereact/toast';
 import TimePeriod from '../Period/TimePeriod';
 import Allowances from '../Period/Allowances';
+import Evaluation from '../Evaluation/Evaluation';
+import { Image } from 'primereact/image';
+import { Card } from 'primereact/card';
 
 
 
@@ -25,6 +28,10 @@ function WebConfig() {
         company_code: "",
         company_tagline: "",
     });
+    const [btnloading, setBtnloadng] = useState(false)
+    const [logo_file, setLogo] = useState([]);
+    const [image, setImage] = useState(null);
+
     const toast = useRef();
 
     useEffect(() => {
@@ -40,7 +47,23 @@ function WebConfig() {
     };
     const handleUpdate = (e) => {
         e.persist();
-        setInfo({...Infomation, [e.target.name] : e.target.value});
+        setInfo({ ...Infomation, [e.target.name]: e.target.value });
+    }
+
+    const handleupload = (e) => {
+        setLogo({ company_logo: e.target.files[0] })
+        const file = e.target.files[0];
+
+        const reader = new FileReader();
+
+        reader.onloadend = () => {
+            setImage(reader.result);
+        };
+
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+
     }
 
     const FetchData = () => {
@@ -62,42 +85,61 @@ function WebConfig() {
     const ApplyChanges = (e) => {
         e.preventDefault();
 
-        const data = {
-            company_name: CompanyDetails.company_name,
-            company_code: CompanyDetails.company_code,
-            company_tagline: CompanyDetails.company_tagline,
-            user_fk: localStorage.getItem('auth_id'),
-        };
+        setBtnloadng(true)
 
-        const data_new = Infomation;
+        // const data = {
+        //     company_name: CompanyDetails.company_name,
+        //     company_code: CompanyDetails.company_code,
+        //     company_tagline: CompanyDetails.company_tagline,
+        //     user_fk: localStorage.getItem('auth_id'),
+        // };
+        // const data_new = Infomation;
+
+        const data = new FormData;
+
+        data.append('company_name',Infomation.company_name)
+        data.append('company_code',Infomation.company_code)
+        data.append('company_tagline',Infomation.company_tagline)
+        data.append('user_fk',localStorage.getItem('auth_id'))
+        data.append('company_logo',logo_file.company_logo)
+        data.append('id',Infomation.id)
 
         {
             Infomation == null ?
-            axios.post(`/api/RegisterCompanyInfo`, data).then(res => {
-                if (res.data.status === 200) {
-                    toast.current.show({ severity: "success", summary: "Apply Changes", detail: "Successfully" });
-                    FetchData();
-                }
-            }).catch((error) => {
-                if (error.response.status === 500) {
-                    swal("Warning", error.response.statusText, 'warning')
-                }
-            })
+                axios.post(`/api/RegisterCompanyInfo`, data).then(res => {
+                    if (res.data.status === 200) {
+                        toast.current.show({ severity: "success", summary: "Apply Changes", detail: "Successfully" });
+                        FetchData();
+                        setBtnloadng(false)
 
-            :
-            axios.put(`/api/UpdateInfo`,data_new).then(res => {
-                if(res.data.status === 200) {
-                    toast.current.show({ severity: "success", summary: "Apply Changes", detail: "Successfully" });
-                    FetchData();
-                }
-            }).catch((error) => {
-                if (error.response.status === 500) {
-                    swal("Warning", error.response.statusText, 'warning')
-                }
-            })
+                    }
+                }).catch((error) => {
+                    if (error.response.status === 500) {
+                        swal("Warning", error.response.statusText, 'warning')
+                        setBtnloadng(false)
+
+                    }
+                })
+                :
+                axios.post(`/api/UpdateInfo`, data).then(res => {
+                    if (res.data.status === 200) {
+                        setBtnloadng(false)
+
+                        toast.current.show({ severity: "success", summary: "Apply Changes", detail: "Successfully" });
+                        setTimeout(() => {
+                            window.location.reload();
+                        },2000)
+                    }
+                }).catch((error) => {
+                    if (error.response.status === 500) {
+                        swal("Warning", error.response.statusText, 'warning')
+                        setBtnloadng(false)
+
+                    }
+                })
         }
-
     }
+
 
     return (
         <div className='container-fluid'>
@@ -148,40 +190,64 @@ function WebConfig() {
                                             </div>
                                             :
                                             <div className="row">
-                                                <div className="col-lg-6 mb-2">
-                                                    <label htmlFor="" className="form-label">
-                                                        Company Name
-                                                    </label>
-                                                    <InputText onChange={handleUpdate} name='company_name' value={Infomation.company_name} className='w-100 p-inputtext-sm' />
+                                                <div className="col-lg-3 mb-2 text-center">
+                                                    <Card subTitle="Current Logo">
+                                                        {
+                                                            Infomation.company_logo == null ?
+                                                                <span>NO LOGO</span>
+                                                                :
+                                                                <Image src={`http://127.0.0.1:8000/${Infomation.company_logo}`} width='150' />
+                                                        }
+                                                    </Card>
+                                                    <div className="mt-3">
+                                                        <Card subTitle="New Logo">
+                                                            {image && (
+                                                                <div className='text-center'>
+                                                                    <h5>New Logo</h5>
+                                                                    <Image src={image} width='150' preview />
+                                                                </div>
+                                                            )}
+                                                        </Card>
+                                                    </div>
                                                 </div>
-                                                <div className="col-lg-6 mb-2">
-                                                    <label htmlFor="" className="form-label">
-                                                        Company ID Code
-                                                    </label>
-                                                    <InputText onChange={handleUpdate} value={Infomation.company_code} name='company_code' className='w-100 p-inputtext-sm' />
-                                                </div>
-                                                <div className="col-lg-6 mb-2">
-                                                    <label htmlFor="" className="form-label">
-                                                        Company Logo
-                                                    </label>
-                                                    <InputText type='file' className='w-100 p-inputtext-sm' />
-                                                </div>
-                                                <div className="col-lg-6 mb-2">
-                                                    <label htmlFor="" className="form-label">
-                                                        Company Color Code
-                                                    </label>
-                                                    <ColorPicker className='w-100' value={color} onChange={(e) => setColor(e.value)} />
-                                                </div>
-                                                <div className="col-lg-12 mb-2">
-                                                    <label htmlFor="" className="form-label">
-                                                        Tagline
-                                                    </label>
-                                                    <InputTextarea value={Infomation.company_tagline} className='w-100' onChange={handleUpdate} name='company_tagline' rows={5} cols={5} style={{ resize: "none" }} />
+                                                <div className="col-lg-9 mb-2">
+                                                    <div className="row">
+                                                        <div className="col-lg-6 mb-2">
+                                                            <label htmlFor="" className="form-label">
+                                                                Company Name
+                                                            </label>
+                                                            <InputText onChange={handleUpdate} name='company_name' value={Infomation.company_name} className='w-100 p-inputtext-sm' />
+                                                        </div>
+                                                        <div className="col-lg-6 mb-2">
+                                                            <label htmlFor="" className="form-label">
+                                                                Company ID Code
+                                                            </label>
+                                                            <InputText onChange={handleUpdate} value={Infomation.company_code} name='company_code' className='w-100 p-inputtext-sm' />
+                                                        </div>
+                                                        <div className="col-lg-6 mb-2">
+                                                            <label htmlFor="" className="form-label">
+                                                                Company Logo
+                                                            </label>
+                                                            <InputText type='file' onChange={handleupload} name='company_logo' className='w-100 p-inputtext-sm' />
+                                                        </div>
+                                                        <div className="col-lg-6 mb-2">
+                                                            <label htmlFor="" className="form-label">
+                                                                Company Color Code
+                                                            </label>
+                                                            <ColorPicker className='w-100' value={color} onChange={(e) => setColor(e.value)} />
+                                                        </div>
+                                                        <div className="col-lg-12 mb-2">
+                                                            <label htmlFor="" className="form-label">
+                                                                Tagline
+                                                            </label>
+                                                            <InputTextarea value={Infomation.company_tagline} className='w-100' onChange={handleUpdate} name='company_tagline' rows={5} cols={5} style={{ resize: "none" }} />
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                     }
-                                    <div className="mt-3">
-                                        <Button className='p-button-success p-button-sm' label='Apply Changes' />
+                                    <div className="mt-3 d-flex justify-content-end">
+                                        <Button loading={btnloading} className='p-button-success p-button-sm' label='Apply Changes' />
                                     </div>
                                 </form>
                         }
@@ -195,15 +261,18 @@ function WebConfig() {
                         </p>
                     </TabPanel>
                     <TabPanel header="Allowanes & Time Period">
-                      <div className="row">
-                        <div className="col-lg-12 mb-2">
-                        <Allowances />
-                        </div>
-                        <div className="col-lg-12 mb-2">
-                       <TimePeriod />
+                        <div className="row">
+                            <div className="col-lg-12 mb-2">
+                                <Allowances />
+                            </div>
+                            <div className="col-lg-12 mb-2">
+                                <TimePeriod />
 
+                            </div>
                         </div>
-                      </div>
+                    </TabPanel>
+                    <TabPanel header="Evaluation Form">
+                        <Evaluation />
                     </TabPanel>
                 </TabView>
             </Panel>

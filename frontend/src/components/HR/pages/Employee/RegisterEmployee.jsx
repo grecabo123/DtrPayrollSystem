@@ -80,7 +80,7 @@ function RegisterEmployee() {
     }
 
     const RemoveImage = () => {
-        setCapturedImage("")
+        setCapturedImage(null)
     }
 
     const RegisterEmployee = (e) => {
@@ -136,7 +136,7 @@ function RegisterEmployee() {
                     <div className="d-flex justify-content-end">
                     <Button onClick={capture} className='p-button-info me-2 p-button-sm' icon="pi pi-camera" />
                     {
-                        capturedImage == "" ? "" : 
+                        capturedImage == null ? "" : 
                     <Button className='p-button-danger p-button-sm me-2' icon="pi pi-trash" onClick={RemoveImage} />
                     }
                     {/* <Button className='p-button-danger p-button-sm me-2' icon="pi pi-times" onClick={Done} /> */}

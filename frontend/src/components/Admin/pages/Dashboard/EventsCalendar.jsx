@@ -4,12 +4,14 @@ import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from 'moment'
 import axios from 'axios';
 import swal from 'sweetalert';
+import { Dialog } from 'primereact/dialog';
 
 
 
 function EventsCalendar() {
     
     const [Details, setDetails] = useState([])
+    const [EventDetails, setEvent] = useState([]);
     const [loading, setloading] = useState(true);
     useEffect(() => {
         axios.get(`/api/AllEvent`).then(res => {
@@ -36,9 +38,7 @@ function EventsCalendar() {
     const [endData, setendData] = useState()
 
 
-    useEffect(() => {
-        
-    },[]);
+  
 
     const localizer = momentLocalizer(moment)
     const onHide = () => {
@@ -60,10 +60,8 @@ function EventsCalendar() {
 
     const handleSelectEvent = useCallback((event) => {
         setViewVisible(true);
-        setDetails(event)
-        setTimeout(() => {
-            setloadingdata(false)
-        },2000);
+        setEvent(event)
+        console.log(event);
     }, [])
     const handleinput = (e) => {
         e.persist();
@@ -88,6 +86,10 @@ function EventsCalendar() {
                     selectable
                     enableAutoScroll
                 />
+
+                <Dialog header={EventDetails.title} onHide={() => setViewVisible(false)} className='p-dialog' visible={ViewVisible} position='top' draggable={false} style={{ width: "50vw" }}>
+                    Date: {EventDetails.start}
+                </Dialog>
         </div>
     )
 }

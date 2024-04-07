@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Models\CompanyInfo;
-use App\Models\Contribution;
-use App\Models\Employee;
-use App\Models\PersonDetails;
 use App\Models\User;
+use App\Models\Employee;
 use App\Models\Department;
 use App\Models\NumberDays;
+use App\Models\CompanyInfo;
 use App\Models\ActivityLogs;
+use App\Models\Contribution;
 use Illuminate\Http\Request;
+use App\Models\PersonDetails;
+use App\Models\EvaluationCore;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -33,12 +35,19 @@ class AdminController extends Controller
     }
 
     //
-    public function FetchData(){
+    public function FetchDataAll(){
         $data = Department::orderBy('department','ASC')->get();
+        $users = User::join('tbl_employee','tbl_employee.user_fk','=','users.id')->where('users.status', 1)
+            ->selectRaw('users.id,users.name,tbl_employee.image_capture')
+                ->whereIn('users.role', [2, 3, 4])
+                    ->orderBy('users.name','ASC')
+                        ->get();
+
 
         return response()->json([
             "status"                =>          200,
             "data"                  =>          $data,
+            "users"                 =>          $users,
         ]);
     }
     public function FetchDataStatus(){
@@ -267,11 +276,101 @@ class AdminController extends Controller
         $data = CompanyInfo::find($request->id);
 
         if($data){
+
+           
+
             $data->company_name = $request->company_name;
             $data->company_code = $request->company_code;
             $data->company_tagline = $request->company_tagline;
+            if($request->hasFile('company_logo')){
+
+                $path = $data->company_logo;
+                if(File::exists($path)){
+                    File::delete($path);
+                }
+
+                $file = $request->file('company_logo');
+                $extension = $file->getClientOriginalExtension();
+                $filename = $data->company_name.".".$extension;
+                $file->move('Uploads/Logo/',$filename);
+                $data->company_logo = "Uploads/Logo/".$filename;
+            }
             $data->update();
 
+            return response()->json([
+                "status"            =>          200,
+            ]);
+        }
+    }
+
+
+    public function AllUsers (){
+
+        $users = User::where('status', 1)->whereIn('role', [2, 3, 4])->get();
+
+        return response()->json([
+            "status"            =>          200,
+            "data"              =>          $users,
+        ]);
+    }
+
+    public function AddCore(Request $request){
+
+        $validate = Validator::make($request->all(), [
+            "core"                  =>          "required",
+            "description"           =>          "required",
+        ]);
+
+        if($validate->fails()) {
+            return response()->json([
+                "error"         =>          $validate->messages(),
+            ]);
+        }
+        else{
+
+            $core = new EvaluationCore;
+            $core->CoreName = $request->core;
+            $core->description = $request->description;
+            $core->save();
+
+            $logs = new ActivityLogs;
+            $logs->description = "Registered Core Name"." ".$request->core;
+            $logs->user_fk = $request->user_fk;
+            $logs->save();
+            return response()->json([
+                "status"            =>          200,
+            ]);
+        }
+    }
+    public function CoreData(){
+        $data = EvaluationCore::orderBy('CoreName','ASC')->get();
+
+        return response()->json([
+            "status"            =>          200,
+            "data"              =>          $data,
+        ]);
+    }
+
+    public function UpdateCore(Request $request){
+
+        $data = EvaluationCore::find($request->id);
+
+        if($data) {
+
+            $data->CoreName = $request->corename;
+            $data->description = $request->description;
+            $data->update();
+
+            return response()->json([
+                "status"            =>          200,
+            ]);
+        }
+    }
+
+    public function RemoveCore($id){
+        $data = EvaluationCore::find($id);
+        if($data) {
+            $data->delete();
             return response()->json([
                 "status"            =>          200,
             ]);

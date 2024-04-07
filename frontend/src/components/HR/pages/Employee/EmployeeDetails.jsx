@@ -6,7 +6,7 @@ import { InputNumber } from 'primereact/inputnumber';
 import { InputText } from 'primereact/inputtext';
 import { Panel } from 'primereact/panel'
 import { Skeleton } from 'primereact/skeleton';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import swal from 'sweetalert';
 import { motion } from "framer-motion";
@@ -17,6 +17,18 @@ import { FaClock } from 'react-icons/fa';
 import { DataTable } from 'primereact/datatable';
 import AllowancesTable from './AllowancesTable';
 import Announcement from '../../../Users/pages/Calendar/Announcement';
+import QRCode from 'qrcode.react';
+import { Dialog } from 'primereact/dialog';
+import { Html5QrcodeScanner, Html5QrcodeSupportedFormats } from 'html5-qrcode'
+import { PrimeIcons } from 'primereact/api';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf'
+import ReactToPrint from 'react-to-print'
+
+
+
+
+
 
 
 function EmployeeDetails(props) {
@@ -25,7 +37,9 @@ function EmployeeDetails(props) {
     const [loading, setLoading] = useState(true)
     const history = useHistory();
     const [activeIndex, setActiveIndex] = useState(0);
-
+    const [qrshow, setshowQR] = useState(false)
+    const [qrscan, setqrscan] = useState("")
+    const [printload, setload] = useState(false);
     useEffect(() => {
         axios.get(`/api/PersonDetails/${props.match.params.id}`).then(res => {
             if (res.data.status === 200) {
@@ -39,8 +53,31 @@ function EmployeeDetails(props) {
         })
     }, [props.match.params.id]);
 
+    const component = useRef();
+
+    const handleinput = () => {
+        window.print();
+    }
+
     const Return = () => {
         history.push(`/hr/employee/list`)
+    }
+    const ShowQRCode = () => {
+        setshowQR(true)
+    }
+
+    const PDFPRINT = () => {
+        const capture = document.querySelector('.personal_details');
+        setload(true)
+        html2canvas(capture).then((canvas) => {
+            const img = canvas.toDataURL('img/png');
+            const doc = new jsPDF('m', 'mm', 'a4');
+            const compowidth = doc.internal.pageSize.getWidth();
+            const compoheight = doc.internal.pageSize.getHeight();
+            doc.addImage(img, 'PNG', 0, 0, compowidth, compoheight);
+            setload(false)
+            doc.save('person.pdf')
+        })
     }
 
     return (
@@ -51,7 +88,16 @@ function EmployeeDetails(props) {
                     :
                     <>
                         <div className="d-flex justify-content-end mb-3">
-                            <Button className='p-button-info p-button-sm' label='Return Page' onClick={Return} />
+                            <Button label='Show QR Code' className='p-button-sm m-2' onClick={ShowQRCode} />
+                            <Button className='p-button-info p-button-sm m-2' label='Return Page' onClick={Return} />
+
+
+                            <ReactToPrint
+                                trigger={() => (
+                                    <Button className='p-button-danger p-button-sm m-2' icon={PrimeIcons.FILE_PDF} label='PDF Print' />
+                                )}
+                                content={() => component.current}
+                            />
                         </div>
                         <Panel header="Employee Record">
                             <TabView className='p-tabview' activeIndex={activeIndex} onTabChange={(e) => setActiveIndex(e.index)}>
@@ -73,7 +119,7 @@ function EmployeeDetails(props) {
                                                         <span>42</span>
                                                     </div>
                                                 </Card>
-                                                
+
                                             </motion.div>
                                         </div>
                                         <div className="col-lg-3 mb-2">
@@ -92,7 +138,7 @@ function EmployeeDetails(props) {
                                                         <span>42</span>
                                                     </div>
                                                 </Card>
-                                                
+
                                             </motion.div>
                                         </div>
                                         <div className="col-lg-3 mb-2">
@@ -111,7 +157,7 @@ function EmployeeDetails(props) {
                                                         <span>42</span>
                                                     </div>
                                                 </Card>
-                                                
+
                                             </motion.div>
                                         </div>
                                         <div className="col-lg-3 mb-2">
@@ -130,7 +176,7 @@ function EmployeeDetails(props) {
                                                         <span>42</span>
                                                     </div>
                                                 </Card>
-                                                
+
                                             </motion.div>
                                         </div>
                                         <div className="mt-2">
@@ -146,122 +192,128 @@ function EmployeeDetails(props) {
                                         </div>
                                         <div className="mt-2">
                                             <Announcement />
-                                            
+
                                         </div>
                                     </div>
                                 </TabPanel>
                                 <TabPanel header="201 File">
-                                    <div className="row">
-                                        <div className="col-lg-3">
-                                            <div className="d-flex justify-content-center border-1">
-                                                <Image className='text-center' preview src={PersonDetails.image_capture} width={250} />
+                                    <div className='personal_details' ref={component}>
+                                        <div className="row">
+                                            <div className="col-lg-3">
+                                                <div className="d-flex justify-content-center border-1">
+                                                    <Image className='text-center' preview src={PersonDetails.image_capture} width={250} />
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div className="col-lg-9">
-                                            <ul class="list-group">
-                                                <li class="list-group-item border-0">
-                                                    <div className="row">
-                                                        <div className="col-lg-4 mb-2">
-                                                            <label htmlFor="" className="form-label">
-                                                                First Name
-                                                            </label>
-                                                            <InputText value={PersonDetails.first_name} readOnly className='w-100 p-inputtext-sm' />
+                                            <div className="col-lg-9">
+                                                <ul class="list-group">
+                                                    <li class="list-group-item border-0">
+                                                        <div className="row">
+                                                            <div className="col-lg-4 mb-2">
+                                                                <label htmlFor="" className="form-label">
+                                                                    First Name
+                                                                </label>
+                                                                <InputText value={PersonDetails.first_name} readOnly className='w-100 p-inputtext-sm' />
+                                                            </div>
+                                                            <div className="col-lg-4 mb-2">
+                                                                <label htmlFor="" className="form-label">
+                                                                    Middle Name
+                                                                </label>
+                                                                <InputText readOnly value={PersonDetails.middle_name} className='w-100 p-inputtext-sm' />
+                                                            </div>
+                                                            <div className="col-lg-4 mb-2">
+                                                                <label htmlFor="" className="form-label">
+                                                                    Last Name
+                                                                </label>
+                                                                <InputText value={PersonDetails.last_name} readOnly className='w-100 p-inputtext-sm' />
+                                                            </div>
+                                                            <div className="col-lg-4 mb-2">
+                                                                <label htmlFor="" className="form-label">
+                                                                    Email
+                                                                </label>
+                                                                <InputText value={PersonDetails.email} readOnly className='w-100 p-inputtext-sm' />
+                                                            </div>
+                                                            <div className="col-lg-4 mb-2">
+                                                                <label htmlFor="" className="form-label">
+                                                                    Birthdate
+                                                                </label>
+                                                                <InputText value={PersonDetails.birthdate} readOnly className='w-100 p-inputtext-sm' />
+                                                            </div>
+                                                            <div className="col-lg-4 mb-2">
+                                                                <label htmlFor="" className="form-label">
+                                                                    Contact Number
+                                                                </label>
+                                                                <InputText value={PersonDetails.contact} readOnly className='w-100 p-inputtext-sm' />
+                                                            </div>
                                                         </div>
-                                                        <div className="col-lg-4 mb-2">
-                                                            <label htmlFor="" className="form-label">
-                                                                Middle Name
-                                                            </label>
-                                                            <InputText readOnly value={PersonDetails.middle_name} className='w-100 p-inputtext-sm' />
-                                                        </div>
-                                                        <div className="col-lg-4 mb-2">
-                                                            <label htmlFor="" className="form-label">
-                                                                Last Name
-                                                            </label>
-                                                            <InputText value={PersonDetails.last_name} readOnly className='w-100 p-inputtext-sm' />
-                                                        </div>
-                                                        <div className="col-lg-4 mb-2">
-                                                            <label htmlFor="" className="form-label">
-                                                                Email
-                                                            </label>
-                                                            <InputText value={PersonDetails.email} readOnly className='w-100 p-inputtext-sm' />
-                                                        </div>
-                                                        <div className="col-lg-4 mb-2">
-                                                            <label htmlFor="" className="form-label">
-                                                                Birthdate
-                                                            </label>
-                                                            <InputText value={PersonDetails.birthdate} readOnly className='w-100 p-inputtext-sm' />
-                                                        </div>
-                                                        <div className="col-lg-4 mb-2">
-                                                            <label htmlFor="" className="form-label">
-                                                                Contact Number
-                                                            </label>
-                                                            <InputText value={PersonDetails.contact} readOnly className='w-100 p-inputtext-sm' />
-                                                        </div>
-                                                    </div>
-                                                </li>
+                                                    </li>
 
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div className="mt-5 container">
-                                        <Divider>
-                                            <span className='p-tag'>Employee Details</span>
-                                        </Divider>
-                                        <div className="row">
-                                            <div className="col-lg-6 mb-2">
-                                                <label htmlFor="" className="form-label">
-                                                    Department
-                                                </label>
-                                                <InputText className='p-inputtext-sm w-100' value={PersonDetails.department} />
-                                            </div>
-                                            <div className="col-lg-6 mb-2">
-                                                <label htmlFor="" className="form-label">
-                                                    Specific Role
-                                                </label>
-                                                <InputText className='p-inputtext-sm w-100' value={PersonDetails.specific_role} />
-                                            </div>
-                                            <div className="col-lg-6 mb-2">
-                                                <label htmlFor="" className="form-label">
-                                                    Basic Montly
-                                                </label>
-                                                <InputNumber className='w-100 p-inputtext-sm' value={PersonDetails.monthly} prefix='₱' readOnly />
-                                            </div>
-                                            <div className="col-lg-6 mb-2">
-                                                <label htmlFor="" className="form-label">
-                                                    Per Day
-                                                </label>
-                                                <InputNumber className='w-100 p-inputtext-sm' value={PersonDetails.per_day} prefix='₱' readOnly />
+                                                </ul>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div className="mt-5 container">
-                                        <Divider>
-                                            <span className='p-tag'>Contribution Details</span>
-                                        </Divider>
-                                        <div className="row">
-                                            <div className="col-lg-6 mb-2">
-                                                <label htmlFor="" className="form-label">
-                                                    SSS Number
-                                                </label>
-                                                <InputText className='p-inputtext-sm w-100' value={PersonDetails.sss} />
+                                        <div className="mt-5 container">
+                                            <Divider>
+                                                <span className='p-tag'>Employee Details</span>
+                                            </Divider>
+                                            <div className="row">
+                                                <div className="col-lg-6 mb-2">
+                                                    <label htmlFor="" className="form-label">
+                                                        Department
+                                                    </label>
+                                                    <InputText className='p-inputtext-sm w-100' value={PersonDetails.department} />
+                                                </div>
+                                                <div className="col-lg-6 mb-2">
+                                                    <label htmlFor="" className="form-label">
+                                                        Specific Role
+                                                    </label>
+                                                    <InputText className='p-inputtext-sm w-100' value={PersonDetails.specific_role} />
+                                                </div>
+                                                <div className="col-lg-6 mb-2">
+                                                    <label htmlFor="" className="form-label">
+                                                        Basic Montly
+                                                    </label>
+                                                    <InputNumber className='w-100 p-inputtext-sm' value={PersonDetails.monthly} prefix='₱' readOnly />
+                                                </div>
+                                                <div className="col-lg-6 mb-2">
+                                                    <label htmlFor="" className="form-label">
+                                                        Per Day
+                                                    </label>
+                                                    <InputNumber className='w-100 p-inputtext-sm' value={PersonDetails.per_day} prefix='₱' readOnly />
+                                                </div>
                                             </div>
-                                            <div className="col-lg-6 mb-2">
-                                                <label htmlFor="" className="form-label">
-                                                    Philhealth Number
-                                                </label>
-                                                <InputText className='p-inputtext-sm w-100' value={PersonDetails.philhealth} />
-                                            </div>
-                                            <div className="col-lg-6 mb-2">
-                                                <label htmlFor="" className="form-label">
-                                                    TIN Number
-                                                </label>
-                                                <InputText className='w-100 p-inputtext-sm' value={PersonDetails.tin} readOnly />
-                                            </div>
-                                            <div className="col-lg-6 mb-2">
-                                                <label htmlFor="" className="form-label">
-                                                    Pag-Ibig Number
-                                                </label>
-                                                <InputText className='w-100 p-inputtext-sm' value={PersonDetails.pagibig} readOnly />
+                                        </div>
+                                        <div className="mt-5 container">
+                                            <Divider>
+                                                <span className='p-tag'>Contribution Details</span>
+                                            </Divider>
+                                            <div className="row">
+                                                <div className="col-lg-6 mb-2">
+                                                    <label htmlFor="" className="form-label">
+                                                        SSS Number
+                                                    </label>
+                                                    <InputText className='p-inputtext-sm w-100' value={PersonDetails.sss} />
+                                                </div>
+                                                <div className="col-lg-6 mb-2">
+                                                    <label htmlFor="" className="form-label">
+                                                        Philhealth Number
+                                                    </label>
+                                                    <InputText className='p-inputtext-sm w-100' value={PersonDetails.philhealth} />
+                                                </div>
+                                                <div className="col-lg-6 mb-2">
+                                                    <label htmlFor="" className="form-label">
+                                                        TIN Number
+                                                    </label>
+                                                    <InputText className='w-100 p-inputtext-sm' value={PersonDetails.tin} readOnly />
+                                                </div>
+                                                <div className="col-lg-6 mb-2">
+                                                    <label htmlFor="" className="form-label">
+                                                        Pag-Ibig Number
+                                                    </label>
+                                                    <InputText className='w-100 p-inputtext-sm' value={PersonDetails.pagibig} readOnly />
+                                                </div>
+                                                <div className="col-lg-6 mb-2">
+
+                                                    <QRCode value={PersonDetails.id} />
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -274,6 +326,20 @@ function EmployeeDetails(props) {
                                 </TabPanel>
                             </TabView>
                         </Panel>
+
+                        <Dialog visible={qrshow} position='top' onHide={(e) => setshowQR(false)} draggable={false} style={{ width: "50vw" }}>
+                            <div className="container">
+                                <div className="row">
+                                    <div className="text-center">
+                                        {PersonDetails.name} - QR CODE
+                                    </div>
+                                    <QRCode value={PersonDetails.id} />
+                                </div>
+                                <div id='reader'></div>
+                            </div>
+                        </Dialog>
+
+
                     </>
             }
         </div>

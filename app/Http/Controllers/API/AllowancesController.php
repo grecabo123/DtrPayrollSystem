@@ -83,11 +83,19 @@ class AllowancesController extends Controller
 
     public function AllowanceEmployee ($id){
 
-        $data = EmployeeAllowances::join('tbl_allowances','tbl_allowances.id','=','tbl_employee_allowances.allowance_fk')->where('user_fk',$id)->get();
+        $data = EmployeeAllowances::join('tbl_allowances','tbl_allowances.id','=','tbl_employee_allowances.allowance_fk')
+            ->selectRaw('tbl_employee_allowances.id,tbl_employee_allowances.amount,tbl_employee_allowances.user_fk,
+            tbl_allowances.allowances_name')
+        ->where('tbl_employee_allowances.user_fk',$id)->get();
+
+        $allowances = EmployeeAllowances::selectRaw('sum(amount) as total')
+            ->where('user_fk',$id)
+                ->first();
 
         return response()->json([
             "status"            =>          200,
             "data"              =>          $data,
+            "total"             =>          $allowances,
         ]);
     }
 
@@ -119,6 +127,32 @@ class AllowancesController extends Controller
                 "status"            =>          200,
             ]);
         }
+    }
+    public function UpdateAmount(Request $request){
 
+        $data = EmployeeAllowances::find($request->id);
+
+        if($data) {
+            $data->amount = $request->amount_update;
+            $data->update();
+
+            return response()->json([
+                "status"            =>          200,
+                "data"              =>          $data,
+            ]);
+        }
+    }
+
+    public function RemoveAllowance($id) {
+
+        $data = EmployeeAllowances::find($id);
+
+        if($data) {
+            $data->delete();
+            return response()->json([
+                "status"            =>          200,
+                "id"                =>          $id,
+            ]);
+        }
     }
 }

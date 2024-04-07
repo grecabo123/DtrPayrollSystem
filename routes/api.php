@@ -1,21 +1,24 @@
 <?php
 
-use App\Http\Controllers\API\AllowancesController;
-use App\Http\Controllers\API\AnnouncementController;
-use App\Http\Controllers\API\EmailController;
-use App\Http\Controllers\API\EmployeeController;
-use App\Http\Controllers\API\EventController;
-use App\Http\Controllers\API\HolidayController;
-use App\Http\Controllers\API\PhilhealthController;
-use App\Http\Controllers\API\SalaryPeriodController;
-use App\Http\Controllers\API\TimePeriodController;
+use App\Http\Controllers\API\CompanyController;
+use App\Http\Controllers\API\EvaluationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\SSSController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\LogsController;
 use App\Http\Controllers\API\AdminController;
+use App\Http\Controllers\API\EmailController;
+use App\Http\Controllers\API\EventController;
+use App\Http\Controllers\API\HolidayController;
 use App\Http\Controllers\API\PagibigController;
+use App\Http\Controllers\API\EmployeeController;
+use App\Http\Controllers\API\AllowancesController;
+use App\Http\Controllers\API\PhilhealthController;
+use App\Http\Controllers\API\TimePeriodController;
+use App\Http\Controllers\API\AnnouncementController;
+use App\Http\Controllers\API\NotificationController;
+use App\Http\Controllers\API\SalaryPeriodController;
 
 // Login
 Route::post('Login',[AuthController::class, 'Login']);
@@ -32,7 +35,8 @@ Route::get('AllEvent',[EventController::class, 'AllEvent']);
 Route::get('Announcement',[AnnouncementController::class, 'Announcement']);
 
 // Department
-Route::get('FetchData',[AdminController::class, 'FetchData']);
+Route::get('FetchDataAll',[AdminController::class, 'FetchDataAll']);
+Route::get('AllUsers',[AdminController::class, 'AllUsers']);
 
 
  // Department
@@ -93,10 +97,23 @@ Route::get('PersonDetails/{id}', [EmployeeController::class, 'PersonDetails']);
 //   Employee Allownace
 Route::get('AllowanceEmployee/{id}',[AllowancesController::class,'AllowanceEmployee']);
 Route::post('AddAllowanceEmployee',[AllowancesController::class, 'AddAllowanceEmployee']);
+Route::put('UpdateAmount',[AllowancesController::class, 'UpdateAmount']);
+Route::delete('RemoveAllowance/{id}',[AllowancesController::class, 'RemoveAllowance']);
+
+Route::get('CountMessage/{id}',[NotificationController::class, 'CountMessage']);
+
+
+// Evaluation Data
+Route::get('EvaluationForm',[EvaluationController::class, 'EvaluationForm']);
 
 // Email Functions
 Route::post('SendEmail',[EmailController::class, 'SendEmail']);
 Route::get('FetchMessage/{id}',[EmailController::class, 'FetchMessage']);
+
+
+
+// Company Details
+Route::get('CompanyDetails',[CompanyController::class, 'CompanyDetails']);
 
 Route::middleware(['auth:sanctum', 'isAPIAdmin'])->group(function () {
     Route::get('/checking',function() {
@@ -112,8 +129,13 @@ Route::middleware(['auth:sanctum', 'isAPIAdmin'])->group(function () {
     // Company Info Config
     Route::post('RegisterCompanyInfo',[AdminController::class, 'RegisterCompanyInfo']);
     Route::get('CompanyInfo',[AdminController::class, 'CompanyInfo']);
-    Route::put('UpdateInfo',[AdminController::class, 'UpdateInfo']);
+    Route::post('UpdateInfo',[AdminController::class, 'UpdateInfo']);
 
+    // Evaluation Create Core & Description
+    Route::post('AddCore',[AdminController::class, 'AddCore']);
+    Route::get('CoreData',[AdminController::class, 'CoreData']);
+    Route::put('UpdateCore',[AdminController::class, 'UpdateCore']);
+    Route::delete('RemoveCore/{id}',[AdminController::class, 'RemoveCore']);
 
 
     // Time Period 
@@ -123,6 +145,9 @@ Route::middleware(['auth:sanctum', 'isAPIAdmin'])->group(function () {
     Route::put('UpdateTimeData',[TimePeriodController::class, 'UpdateTimeData']);
 
   
+
+    // Create Announcement
+    Route::post('CreateAnnounement',[AnnouncementController::class, 'CreateAnnounement']);
 });
 
 

@@ -7,6 +7,7 @@ import SSS from "../components/HR/pages/Contribution/SSS";
 import Dashboard from "../components/HR/pages/Dashboard/Dashboard";
 import CreateDepartment from "../components/HR/pages/Department/CreateDepartment";
 import EmployeeDetails from "../components/HR/pages/Employee/EmployeeDetails";
+import Evaulation from "../components/HR/pages/Employee/Evaulation";
 import ListOfEmployee from "../components/HR/pages/Employee/ListOfEmployee";
 import RegisterEmployee from "../components/HR/pages/Employee/RegisterEmployee";
 import Activity from "../components/HR/pages/Logs/Activity";
@@ -27,6 +28,7 @@ const HumanResourceRoutes = [
     {path: "/hr/employee/list", exact: true, name: "list", component: ListOfEmployee},
     {path: "/hr/employee/details/refid=:id", exact: true, name: "details", component: EmployeeDetails},
     {path: "/hr/department", exact: true, name: "department", component: CreateDepartment},
+    {path: "/hr/employee/feedback/refid=:id", exact: true, name: "Evaluation", component: Evaulation},
 ];
 
 export default HumanResourceRoutes;

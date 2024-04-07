@@ -13,7 +13,7 @@ class PhilhealthController extends Controller
     public function PhilhealthRegister (Request $request){
 
         $pagibig = new Philhealth;
-        
+                    
         $pagibig->from = $request->rangefrom;
         $pagibig->to = $request->rangeto;
         $pagibig->premium_rate = $request->eedata;
