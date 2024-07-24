@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\AccessController;
 use App\Http\Controllers\API\CompanyController;
 use App\Http\Controllers\API\EvaluationController;
 use Illuminate\Http\Request;
@@ -144,7 +145,9 @@ Route::middleware(['auth:sanctum', 'isAPIAdmin'])->group(function () {
     Route::delete('RemoveTimeData/{id}',[TimePeriodController::class, 'RemoveTimeData']);
     Route::put('UpdateTimeData',[TimePeriodController::class, 'UpdateTimeData']);
 
-  
+    // Config Access
+    Route::get('UpdateAccess/{id}',[AccessController::class, 'UpdateAccess']);
+    Route::put('EditAccess',[AccessController::class, 'EditAccess']);
 
     // Create Announcement
     Route::post('CreateAnnounement',[AnnouncementController::class, 'CreateAnnounement']);

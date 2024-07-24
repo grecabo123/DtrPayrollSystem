@@ -8,6 +8,8 @@ import Leave from "../components/Users/pages/Reports/Leave";
 import Resign from "../components/Users/pages/Reports/Resign";
 import Sick from "../components/Users/pages/Reports/Sick";
 import ScheduleData from "../components/Users/pages/Schedule/ScheduleData";
+import AccomplishmentTask from "../components/Users/pages/Task/AccomplishmentTask";
+import NewTask from "../components/Users/pages/Task/NewTask";
 
 const EmployeeRoutes = [
     {path: "/employee/dashboard", exact: true, name: "Dashboard", component: Dashboard},
@@ -20,6 +22,8 @@ const EmployeeRoutes = [
     {path: "/employee/request/resign", exact: true, name: "Resign", component: Resign},
     {path: "/employee/payslip/payroll", exact: true, name: "Payroll", component: Payslip},
     {path: "/employee/message/inbox", exact: true, name: "Inbox", component: Inbox},
+    {path: "/employee/task/new", exact: true, name: "NewTask", component: NewTask},
+    {path: "/employee/task/accomplishment", exact: true, name: "Accomplishment", component: AccomplishmentTask},
 ];
 
 export default EmployeeRoutes;

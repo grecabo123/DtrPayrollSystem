@@ -15,7 +15,6 @@ import { Card } from 'primereact/card';
 import { FcClock } from 'react-icons/fc';
 import { FaClock } from 'react-icons/fa';
 import { DataTable } from 'primereact/datatable';
-import AllowancesTable from './AllowancesTable';
 import Announcement from '../../../Users/pages/Calendar/Announcement';
 import QRCode from 'qrcode.react';
 import { Dialog } from 'primereact/dialog';
@@ -24,9 +23,9 @@ import { PrimeIcons } from 'primereact/api';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf'
 import ReactToPrint from 'react-to-print'
-import QRCodeEmployee from './QRCodeEmployee';
+import AccountControls from './AccountControls';
 
-function EmployeeDetails(props) {
+function DetailsEmployee(props) {
 
     const [PersonDetails, setPerson] = useState([]);
     const [loading, setLoading] = useState(true)
@@ -55,26 +54,8 @@ function EmployeeDetails(props) {
     }
 
     const Return = () => {
-        history.push(`/hr/employee/list`)
+        history.push(`/admin/employee/list`)
     }
-    const ShowQRCode = () => {
-        setshowQR(true)
-    }
-
-    const PDFPRINT = () => {
-        const capture = document.querySelector('.personal_details');
-        setload(true)
-        html2canvas(capture).then((canvas) => {
-            const img = canvas.toDataURL('img/png');
-            const doc = new jsPDF('m', 'mm', 'a4');
-            const compowidth = doc.internal.pageSize.getWidth();
-            const compoheight = doc.internal.pageSize.getHeight();
-            doc.addImage(img, 'PNG', 0, 0, compowidth, compoheight);
-            setload(false)
-            doc.save('person.pdf')
-        })
-    }
-
     return (
         <div className='container-fluid'>
             {
@@ -82,10 +63,10 @@ function EmployeeDetails(props) {
                     <Skeleton />
                     :
                     <>
-                        <div className="d-flex justify-content-end mb-3">
-                            <Button className='p-button-info p-button-sm m-2' label='Return Page' onClick={Return} />
-                        </div>
                         <Panel header="Employee Record">
+                        <div className="d-flex justify-content-end mb-1">
+                            <Button className='p-button-info p-button-sm' label='Return Page' onClick={Return} />
+                        </div>
                             <TabView className='p-tabview' activeIndex={activeIndex} onTabChange={(e) => setActiveIndex(e.index)}>
                                 <TabPanel header="Account">
                                     <div className="row mt-2">
@@ -305,13 +286,13 @@ function EmployeeDetails(props) {
                                     </div>
                                 </TabPanel>
                                 <TabPanel header="Allowances">
-                                    <AllowancesTable data={PersonDetails} />
                                 </TabPanel>
                                 <TabPanel header="Schedule">
-
                                 </TabPanel>
                                 <TabPanel header="QR Code">
-                                    <QRCodeEmployee data={PersonDetails} />
+                                </TabPanel>
+                                <TabPanel header="Account Settings">
+                                    <AccountControls data={PersonDetails.id} />
                                 </TabPanel>
                             </TabView>
                         </Panel>
@@ -335,4 +316,4 @@ function EmployeeDetails(props) {
     )
 }
 
-export default EmployeeDetails
+export default DetailsEmployee

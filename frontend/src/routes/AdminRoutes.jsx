@@ -5,6 +5,7 @@ import SSS from "../components/Admin/pages/Contribution/SSS";
 import TIN from "../components/Admin/pages/Contribution/TIN";
 import Dashboard from "../components/Admin/pages/Dashboard/Dashboard";
 import CreateData from "../components/Admin/pages/Department/CreateData";
+import DetailsEmployee from "../components/Admin/pages/Employee/DetailsEmployee";
 import ListEmployee from "../components/Admin/pages/Employee/ListEmployee";
 import RegisterEmployee from "../components/Admin/pages/Employee/RegisterEmployee";
 import Legal from "../components/Admin/pages/Holidays/Legal";
@@ -21,8 +22,9 @@ import WebConfig from "../components/Admin/pages/Settings/WebConfig";
 
 const AdminRoutes = [
     {path: "/admin/dashboard", exact: true, name: "Dashboard", component: Dashboard},
-    {path: "/admin/employee", exact: true, name: "Employee", component: RegisterEmployee},
-    {path: "/admin/list", exact: true, name: "List", component: ListEmployee},
+    {path: "/admin/employee/add", exact: true, name: "Employee", component: RegisterEmployee},
+    {path: "/admin/employee/list", exact: true, name: "EmployeeList", component: ListEmployee},
+    {path: "/admin/employee/details/refid=:id", exact: true, name: "DetailsEmployee", component: DetailsEmployee},
     {path: "/admin/department", exact: true, name: "Department", component: CreateData},
     {path: "/admin/logs", exact: true, name: "Logs", component: ActivityLogs},
     {path: "/admin/calendar/announcements", exact: true, name: "Announcement", component: Announcements},

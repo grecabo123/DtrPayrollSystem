@@ -193,7 +193,10 @@ function PagIbig() {
                 <Button onClick={(e) => setVisible(true)} className='p-button-sm p-button-info' label='Add Contribution' icon={PrimeIcons.PLUS} />
             </div>
             <Panel header={`PagIbig` + ' ' + moment().format('YYYY') + ' ' + 'Contribution'}>
-                <DataTable value={Data} loading={loading} paginator paginatorLeft rows={10}>
+                <DataTable value={Data} loading={loading} paginator paginatorLeft 
+                    size='small'
+                    selectionMode={'single'}
+                rows={10}>
                     <Column field='from' body={RangeCompensation} header="Range of Compensation"></Column>
                     <Column field='employee_share' body={ERFormat} header="Employee's Share"></Column>
                     <Column field='employers_share' body={EEFormat} header="Employer's Share"></Column>

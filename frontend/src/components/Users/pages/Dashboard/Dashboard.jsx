@@ -94,9 +94,16 @@ function Dashboard() {
                 <div className="mt-3">
                     <div className="row">
                         <div className="col-lg-12 mb-2">
-                            <Panel header='Task Status'>
+                            <Panel header='Task Monitoring'>
                                 <DataTable paginator paginatorLeft rows={10}>
-                                    <Column></Column>
+                                    <Column header="#"></Column>
+                                    <Column header="Task"></Column>
+                                    <Column header="Status"></Column>
+                                    <Column header="Start Date"></Column>
+                                    <Column header="Due Date"></Column>
+                                    <Column header="Percentage"></Column>
+                                    <Column header="Duration"></Column>
+                                    <Column header="Priority"></Column>
                                 </DataTable>
                             </Panel>
                         </div>

@@ -202,8 +202,12 @@ function Dashboard() {
                             ease: [0, 0.71, 0.2, 1.01]
                         }}
                     >
-                        <DataTable title='Employee Data' loading={loading}   emptyMessage="No Employee Found." header={header} dataKey='id' value={Employee} filters={filters} globalFilterFields={['name', 'specific_role','employee_code']} paginator paginatorLeft rows={10}>
-                            <Column field='name' body={Image_Name} filterField='name' header="Name of Employee"></Column>
+                        <DataTable title='Employee Data' 
+                            size='small'
+                            selectionMode={'single'}
+                        
+                        loading={loading}   emptyMessage="No Employee Found." header={header} dataKey='id' value={Employee} filters={filters} globalFilterFields={['name', 'specific_role','employee_code']} paginator paginatorLeft rows={10}>
+                            {/* <Column field='name' body={Image_Name} filterField='name' header="Name of Employee"></Column> */}
                             <Column field='company_code' filterField='employee_code' body={EmployeeCode} header="Employee ID"></Column>
                             <Column field='role' body={AccountRole} header="Account Role"></Column>
                             <Column field='specific_role' filterField='specific_role' header="Specific Role"></Column>

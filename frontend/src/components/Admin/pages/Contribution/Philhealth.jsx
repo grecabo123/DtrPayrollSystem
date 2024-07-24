@@ -176,7 +176,10 @@ function Philhealth() {
                 <Button onClick={(e) => setVisible(true)} className='p-button-sm p-button-info' label='Add Contribution' icon={PrimeIcons.PLUS} />
             </div>
             <Panel header={`Philhealth` + ' ' + moment().format('YYYY') + ' ' + 'Contribution'}>
-                <DataTable value={Data} loading={loading} paginator paginatorLeft rows={10}>
+                <DataTable value={Data} 
+                    size='small'
+                    selectionMode={'single'}
+                loading={loading} paginator paginatorLeft rows={10}>
                     <Column field='from' body={RangeCompensation} header="Monthly Basic Salary"></Column>
                     <Column field='premium_rate' body={ERFormat} header="Premium Rate"></Column>
                     <Column field='Action' body={Action} header="Action"></Column>

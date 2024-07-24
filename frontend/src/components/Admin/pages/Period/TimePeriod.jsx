@@ -63,7 +63,7 @@ function TimePeriod() {
         return (
             <>
                 <Button data-indicator={1} onClick={DisplayModal}
-                    className='p-button-success p-button-sm m-2'
+                    className='p-button-success p-button-sm m-1'
                     label='Edit'
                     icon={PrimeIcons.PENCIL}
                     data-time_name={TimeData.time_period_name}
@@ -71,7 +71,7 @@ function TimePeriod() {
                     data-id={TimeData.id}
                 />
                 <Button data-indicator={2} onClick={DisplayModal}
-                    className='p-button-danger p-button-sm m-2'
+                    className='p-button-danger p-button-sm m-1'
                     label='Delete'
                     data-time_name={TimeData.time_period_name}
                     data-time_nums={TimeData.time_mins}
@@ -192,7 +192,11 @@ function TimePeriod() {
             <div className="d-flex justify-content-end mb-3">
                 <Button className='p-button-sm p-button-info' onClick={AddTime} icon={PrimeIcons.PLUS} label='Add Time Period' />
             </div>
-            <DataTable loading={loading} value={TimeData} header="Time Period" paginator paginatorLeft rows={10}>
+            <DataTable loading={loading} 
+                size='small'
+                selectionMode={'single'}
+            value={TimeData} header="Time Period" paginator paginatorLeft rows={10}>
+                <Column header="#" body={(data,options) => options.rowIndex + 1}></Column>
                 <Column field='time_period_name' header="Period Name"></Column>
                 <Column field='time_mins' body={TimeFormat} header="Period Time"></Column>
                 <Column field='id' body={ActionButton} header="Actions"></Column>

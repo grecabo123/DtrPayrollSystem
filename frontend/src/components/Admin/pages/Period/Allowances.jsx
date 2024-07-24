@@ -185,7 +185,11 @@ function Allowances() {
             <div className="d-flex justify-content-end mb-3">
                 <Button className='p-button-sm p-button-info' onClick={AddTime} icon={PrimeIcons.PLUS} label='Add Allowances' />
             </div>
-            <DataTable loading={loading} value={AllowanceData} header="Allowances" paginator paginatorLeft rows={10}>
+            <DataTable loading={loading} 
+                size='small'
+                selectionMode={'single'}
+            value={AllowanceData} header="Allowances" paginator paginatorLeft rows={10}>
+                <Column header="#" body={(data,options) => options.rowIndex + 1}></Column>
                 <Column field='allowances_name' header="Allowance Name"></Column>
                 <Column field='created_at' body={TimeFormat} header="Created"></Column>
                 <Column field='id' body={ActionButton} header="Actions"></Column>

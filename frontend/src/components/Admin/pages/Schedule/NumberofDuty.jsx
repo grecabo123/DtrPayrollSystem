@@ -160,7 +160,10 @@ function NumberofDuty() {
                         onClick={(e) => setVisible(true)}
                     />
                 </div>
-                <DataTable loading={loading} value={numdata} paginator paginatorLeft rows={10}>
+                <DataTable loading={loading} value={numdata} paginator 
+                    size='small'
+                    selectionMode={'single'}
+                paginatorLeft rows={10}>
                     <Column field='days' header="Total"></Column>
                     <Column field='id' body={ActionButton} header="Actions"></Column>
                     <Column field='created_at' body={date_format} header="Created"></Column>
@@ -193,7 +196,7 @@ function NumberofDuty() {
                             </div>
                         </div>
                         <div className="mt-3">
-                            <Button className='w-100' label='Register' loading={btnloading} />
+                            <Button className='w-100 p-button-sm' label='Register' loading={btnloading} />
                         </div>
                     </div>
                 </form>
@@ -210,7 +213,7 @@ function NumberofDuty() {
                                 <InputText value={daysDetails.days} onChange={handleupdate} className='w-100 p-inputtext-sm' keyfilter={'pint'} name='days' />
                             </div>
                             <div className="mt-3">
-                                <Button className='w-100 p-button-success' label='Update' />
+                                <Button className='w-100 p-button-success p-button-sm' label='Update' />
                             </div>
                         </div>
                     </div>

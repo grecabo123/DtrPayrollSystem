@@ -151,7 +151,6 @@ function HR() {
                                         <img src={`http://127.0.0.1:8000/${Details.company_logo}`} width={100} style={{ borderRadius: "50%" }} alt="" />
                                     </div>
                                 </li>
-
                                 <li class="nav-title">Pages</li>
                                 <li class="nav-item"><a class="nav-link" href="/hr">
                                     <FcHome className='nav-icon' /> Dashboard</a></li>
@@ -175,7 +174,7 @@ function HR() {
                                     <FcDeployment className='nav-icon' />Employee Data</a>
                                 </li>
                                 <div class="collapse" id='product'>
-                                    <li class="nav-item"><Link class="nav-link" to="/hr/product"><FcOpenedFolder className='nav-icon' />DTR</Link></li>
+                                    <li class="nav-item"><Link class="nav-link" to="/hr/employee/dtr"><FcOpenedFolder className='nav-icon' />DTR</Link></li>
                                     <li class="nav-item"><Link class="nav-link" to="/hr/product"><FcOpenedFolder className='nav-icon' />Schedule</Link></li>
                                 </div>
 
@@ -205,20 +204,12 @@ function HR() {
                                     <li class="nav-item"><Link class="nav-link" to="/hr/calendar/schedule"><span className='nav-icon' />Leave Report</Link></li>
                                     <li class="nav-item"><Link class="nav-link" to="/hr/calendar/days"><span className='nav-icon' />Resignation Report</Link></li>
                                 </div>
-
-
-
-
                                 <li class="nav-title">Reports</li>
                                 <li class="nav-item"><Link class="nav-link" to="/hr/distribute"><FcCollaboration className='nav-icon' />PaySlip</Link></li>
-
-
                                 {/* History */}
                                 <li class="nav-title">History</li>
                                 <li class="nav-item"><Link class="nav-link" to="/hr/logs">
                                     <FaDesktop className='nav-icon' /> Activity Logs</Link></li>
-
-
                             </ul>
                         </div>
                         <div className=" wrapper d-flex flex-column min-vh-100">

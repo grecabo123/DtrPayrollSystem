@@ -14,6 +14,7 @@ function Login() {
         error: [],
     });
     const history = useHistory();
+    const [btnloading, setBtnloadng] = useState(false)
 
     const handleInput = (e) => {
         e.persist();
@@ -23,7 +24,7 @@ function Login() {
 
     const LoginForm = (e) => {
         e.preventDefault();
-
+        setBtnloadng(true)
         const data = {
             email: LoginData.email,
             password: LoginData.password,
@@ -66,13 +67,24 @@ function Login() {
                         history.push('/employee');
                         swal('Success', res.data.message, 'success')
                     }
+                    setBtnloadng(false)
+
+                }
+                else if(res.data.status === 504) {
+                    setBtnloadng(false)
+
+                    swal("Warning","Wrong Credintials", "warning");
                 }
                 else {
+                    setBtnloadng(false)
+
                     setLogin({ ...LoginData, error: res.data.error });
                 }
             }).catch((error) => {
                 if (error.response.status === 500) {
                     swal("Warning", error.response.statusText, 'warning');
+                    setBtnloadng(false)
+
                 }
             })
         });
@@ -104,7 +116,7 @@ function Login() {
                                             <span className='text-danger'>{LoginData.error.password}</span>
                                         </div>
                                         <div className="mt-3">
-                                            <Button className='w-100 p-button-info p-button-sm' label='Login' />
+                                            <Button loading={btnloading} className='w-100 p-button-info p-button-sm' label='Login' />
                                         </div>
                                     </div>
                                 </div>

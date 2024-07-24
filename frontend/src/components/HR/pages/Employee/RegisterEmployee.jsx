@@ -157,10 +157,6 @@ function RegisterEmployee() {
                                     width={200}
                                 />
                                 }
-                              
-                                {/* <button onClick={capture}>Capture</button>
-                                <button onClick={Done}>Done</button> */}
-
                                 {capturedImage && (
                                     <div className=''>
                                         <img src={capturedImage} className='w-100' alt="Captured" />

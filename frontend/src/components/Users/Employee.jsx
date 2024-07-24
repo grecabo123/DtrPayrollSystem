@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import { Link, Redirect, Route, Switch, useHistory } from 'react-router-dom/cjs/react-router-dom.min'
-import { FcCalendar, FcSurvey, FcOpenedFolder, FcHome, FcSms, FcPositiveDynamic, FcManager, FcHighPriority, FcCheckmark, FcFolder, FcFeedback, FcBiohazard, FcAssistant, FcBarChart, FcFactory, FcLineChart, FcInfo, FcDeployment, FcCollaboration, FcSettings, FcPlanner, FcSportsMode, FcFile, FcComments } from 'react-icons/fc'
+import { FcCalendar, FcSurvey, FcOpenedFolder, FcHome, FcSms, FcPositiveDynamic, FcManager, FcHighPriority, FcCheckmark, FcFolder, FcFeedback, FcBiohazard, FcAssistant, FcBarChart, FcFactory, FcLineChart, FcInfo, FcDeployment, FcCollaboration, FcSettings, FcPlanner, FcSportsMode, FcFile, FcComments, FcDataSheet, FcApproval, FcNews } from 'react-icons/fc'
 import { FaArchive, FaBars, FaBox, FaBuilding, FaCalculator, FaCalendar, FaCalendarCheck, FaCalendarPlus, FaCaretDown, FaCaretRight, FaChartLine, FaClock, FaCogs, FaDatabase, FaDeskpro, FaDesktop, FaDollarSign, FaEnvelope, FaFolder, FaFolderOpen, FaHeart, FaHome, FaMoneyBill, FaPen, FaPenAlt, FaStore, FaUserAlt, FaUsers } from 'react-icons/fa'
 import axios from 'axios'
 import swal from 'sweetalert'
@@ -25,72 +25,6 @@ function Employee() {
             }
         });
     }
-
-    const items = [
-        {
-            label: 'Instruction',
-            icon: 'pi pi-home',
-            command: () => {
-                history.push(`/admin`);
-            }
-        },
-        {
-            label: 'Holidays',
-            items: [
-                {
-                    label: 'Legal Holiday',
-                    icon: 'pi pi-bolt',
-                    command: () => {
-                        history.push(`/admin/holiday/legal`);
-                    }
-                },
-                {
-                    label: 'Special Holiday',
-                    icon: 'pi pi-server',
-                    command: () => {
-                        history.push(`/admin/holiday/special`);
-                    }
-                },
-
-            ]
-        },
-        {
-            label: 'Contribution',
-            items: [
-                {
-                    label: 'SSS',
-                    command: () => {
-                        history.push(`/admin/contribution/sss`)
-                    }
-                },
-                {
-                    label: 'Pag-Ibig',
-                    command: () => {
-                        history.push(`/admin/contribution/pagibig`)
-                    }
-                },
-                {
-                    label: 'Philhealth',
-                    command: () => {
-                        history.push(`/admin/contribution/philhealth`)
-                    }
-                },
-                {
-                    label: 'TIN',
-                    command: () => {
-                        history.push(`/admin/contribution/tin`)
-                    }
-                }
-            ]
-        },
-        {
-            label: 'Announcement',
-            icon: PrimeIcons.CALENDAR,
-            command: () => {
-                history.push(`/admin/calendar/announcements`)
-            }
-        }
-    ];
 
     let items_list = [
         { label: 'Settings', icon: 'pi pi-fw pi-cog', url: '/admin/myaccount' },
@@ -128,10 +62,15 @@ function Employee() {
                         <li class="nav-item"><Link class="nav-link" to="/employee/attendance/dtr"><FcOpenedFolder className='nav-icon' />DTR</Link></li>
                         <li class="nav-item"><Link class="nav-link" to="/employee/attendance/schedule"><FcOpenedFolder className='nav-icon' />Schedule</Link></li>
                     </div>
+                    <li class="nav-group"><a class="nav-link nav-group-toggle" data-bs-toggle="collapse" data-bs-target="#task">
+                        <FcDataSheet className='nav-icon' />My Task</a>
+                    </li>
+                    <div class="collapse" id='task'>
+                        <li class="nav-item"><Link class="nav-link" to="/employee/task/accomplishment"><FcApproval className='nav-icon' />Accomplishment</Link></li>
+                        <li class="nav-item"><Link class="nav-link" to="/employee/task/new"><FcNews className='nav-icon' />New Task</Link></li>
+                    </div>
                     <li class="nav-item"><Link class="nav-link" to="/employee/message/inbox">
                         <FcComments className='nav-icon' /> Messages</Link></li>
-               
-
                     <li class="nav-title">Request</li>
                     <li class="nav-group"><a class="nav-link nav-group-toggle" data-bs-toggle="collapse" data-bs-target="#forms">
                         <FcFolder className='nav-icon' />Forms</a>
@@ -159,7 +98,7 @@ function Employee() {
             
                 {/* <Menu model={items_list} id="popup_menu" popup ref={menu} /> */}
                 <Menu model={items_list} popup ref={menu} id="popup_menu_left" />
-                <Menubar model={items} end={
+                <Menubar end={
                     <>
                         <Avatar className='text-dark fw-bold' onClick={(event) => menu.current.toggle(event)} aria-controls="popup_menu" aria-haspopup shape='square' label='A' size='large' />
                     </>

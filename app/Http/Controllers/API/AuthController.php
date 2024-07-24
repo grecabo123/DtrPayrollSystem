@@ -25,7 +25,7 @@ class AuthController extends Controller
         }
         else{
             $user = User::where('email',$request->email)->first();
-            if($user || Hash::check($request->password, $user->password)){   
+            if($user && Hash::check($request->password, $user->password)){   
                 if($user->status == 1){
                     // Admin
                     if($user->role == 1){

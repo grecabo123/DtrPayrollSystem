@@ -6,6 +6,7 @@ import Philhealth from "../components/HR/pages/Contribution/Philhealth";
 import SSS from "../components/HR/pages/Contribution/SSS";
 import Dashboard from "../components/HR/pages/Dashboard/Dashboard";
 import CreateDepartment from "../components/HR/pages/Department/CreateDepartment";
+import DTREmployee from "../components/HR/pages/Employee/DTREmployee";
 import EmployeeDetails from "../components/HR/pages/Employee/EmployeeDetails";
 import Evaulation from "../components/HR/pages/Employee/Evaulation";
 import ListOfEmployee from "../components/HR/pages/Employee/ListOfEmployee";
@@ -26,6 +27,7 @@ const HumanResourceRoutes = [
     {path: "/hr/calendar/days", exact: true, name: "days", component: TotalDuty},
     {path: "/hr/employee/add", exact: true, name: "register", component: RegisterEmployee},
     {path: "/hr/employee/list", exact: true, name: "list", component: ListOfEmployee},
+    {path: "/hr/employee/dtr", exact: true, name: "list", component: DTREmployee},
     {path: "/hr/employee/details/refid=:id", exact: true, name: "details", component: EmployeeDetails},
     {path: "/hr/department", exact: true, name: "department", component: CreateDepartment},
     {path: "/hr/employee/feedback/refid=:id", exact: true, name: "Evaluation", component: Evaulation},

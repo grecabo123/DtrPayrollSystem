@@ -7,6 +7,7 @@ import PrimeReact from 'primereact/api';
 import PrivateAdminRoutes from './privateroutes/PrivateAdminRoutes';
 import PrivateEmployeeRoutes from './privateroutes/PrivateEmployeeRoutes';
 import PrivateHumanResourceRoutes from './privateroutes/PrivateHumanResourceRoutes';
+import QRScan from './components/QRScan';
 
 
 axios.defaults.baseURL = "http://127.0.0.1:8000";
@@ -30,6 +31,7 @@ function App() {
                 <Switch>
                     <Route path="/" exact={true} component={Landing} />
                     <Route path="/login" component={Login} />
+                    <Route path="/QR" component={QRScan} />
 
                     {/* Admin */}
                     <PrivateAdminRoutes path="/admin" name="admin" />

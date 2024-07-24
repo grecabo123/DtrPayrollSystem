@@ -9,6 +9,7 @@ use App\Models\NumberDays;
 use App\Models\CompanyInfo;
 use App\Models\ActivityLogs;
 use App\Models\Contribution;
+use App\Models\UserControl;
 use Illuminate\Http\Request;
 use App\Models\PersonDetails;
 use App\Models\EvaluationCore;
@@ -177,7 +178,27 @@ class AdminController extends Controller
     public function RegisterEmployee(Request $request){
 
         $validate = Validator::make($request->all(), [
-            ""
+            "fname"                 =>          "required",
+            "lname"                 =>          "required",
+            "current_adr"           =>          "required",
+            "perma_adr"             =>          "required",
+            "contact"               =>          "required",
+            "birthdate"             =>          "required",
+            "email"                 =>          "required|email|unique:users,email",
+            "department"            =>          "required",
+            "specific_role"         =>          "required",
+            "salary"                =>          "required",
+        ],[
+            "fname.required"        =>          "First Name field is required",
+            "lname.required"        =>          "Last Name field is required",
+            "current_adr.required"  =>          "Current Address feild is required",
+            "perma_adr.required"    =>          "Permanent Address feild is required",
+            "contact.required"      =>          "Contact feild is required",
+            "birthdate.required"    =>          "Birthdate field is required",
+            "department.required"   =>          "Departemnt field is required",
+            "specific_role.required"    =>      "Specific Role field is required",
+            "salary.required"       =>          "Salary field is required",
+            
         ]);
 
         if($validate->fails()) {
@@ -232,6 +253,10 @@ class AdminController extends Controller
             $logs->description = "Registered"." ".$request->fname." ".$request->mname." ".$request->lname;
             $logs->user_fk = $request->user_fk;
             $logs->save();
+
+            $user_control = new UserControl;
+            $user_control->user_fk = $user->id;
+            $user_control->save();
 
             return response()->json([
                 "status"            =>          200,

@@ -59,7 +59,7 @@ function Navigation() {
                 start={<a href="/"><img src={timeicon} width={50} /></a>}
                 end={<>
                     <Link to="/login"><Button className='p-button-info p-button-sm' label='Login' text /></Link>
-                    <Button className='p-button-info p-button-sm' label='SignUp' text />
+                    <Link to="/QR"> <Button className='p-button-info p-button-sm' label='SignUp' text /></Link>
                 </>} 
                 model={items} 
                 

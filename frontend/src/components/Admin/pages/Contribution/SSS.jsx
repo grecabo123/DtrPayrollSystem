@@ -96,7 +96,7 @@ function SSS() {
 
     const ERFormat = (Data) => {
         return (
-         
+
             <span>₱{Data.ER.toFixed(2)}</span>
         )
     }
@@ -193,7 +193,10 @@ function SSS() {
                 <Button onClick={(e) => setVisible(true)} className='p-button-sm p-button-info' label='Add Contribution' icon={PrimeIcons.PLUS} />
             </div>
             <Panel header={`SSS` + ' ' + moment().format('YYYY') + ' ' + 'Contribution'}>
-                <DataTable value={Data} loading={loading} paginator paginatorLeft rows={10}>
+                <DataTable value={Data} loading={loading} paginator paginatorLeft
+                    size='small'
+                    selectionMode={'single'}
+                    rows={10}>
                     <Column field='rangefrom' body={RangeCompensation} header="Range of Compensation"></Column>
                     <Column field='ER' body={ERFormat} header="ER"></Column>
                     <Column field='EE' body={EEFormat} header="EE"></Column>
@@ -271,9 +274,9 @@ function SSS() {
                                 </label>
                                 <InputNumber value={DetailsData.er} className='p-inputtext-sm w-100' prefix="₱" onValueChange={handleinput} name='er' minFractionDigits={2} />
                             </div>
-                         
+
                             <div className="mt-3">
-                                <Button className={ DetailsData.indicator == 1 ? `p-button-info p-button-sm` : `p-button-danger p-button-sm`} label={DetailsData.indicator == 1 ? "Update" : "Remove"} />
+                                <Button className={DetailsData.indicator == 1 ? `p-button-info p-button-sm` : `p-button-danger p-button-sm`} label={DetailsData.indicator == 1 ? "Update" : "Remove"} />
                             </div>
                         </div>
                     </div>
