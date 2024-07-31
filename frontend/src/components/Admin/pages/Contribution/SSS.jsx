@@ -213,12 +213,12 @@ function SSS() {
                                 Range of Compensation
                             </label>
                             <div className="col-lg-6 mb-2">
-                                <InputNumber value={rangefromData} onValueChange={(e) => setrangefromData(e.value)} className='w-100 p-inputtext-sm' minFractionDigits={2} prefix='₱' />
+                                <InputNumber placeholder='0.00' value={rangefromData} onValueChange={(e) => setrangefromData(e.value)} className='w-100 p-inputtext-sm' minFractionDigits={2} prefix='₱' />
                             </div>
                             <div className="col-lg-6 mb-2">
                                 <label className="form-label">
                                 </label>
-                                <InputNumber value={rangetoData} className='w-100 p-inputtext-sm' onValueChange={(e) => setrangetoData(e.value)} minFractionDigits={2} prefix='₱' />
+                                <InputNumber placeholder='0.00' value={rangetoData} className='w-100 p-inputtext-sm' onValueChange={(e) => setrangetoData(e.value)} minFractionDigits={2} prefix='₱' />
                             </div>
                             <div className="col-lg-12 mb-2">
                                 <label className="form-label">

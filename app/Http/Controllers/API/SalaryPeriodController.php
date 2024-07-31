@@ -25,13 +25,14 @@ class SalaryPeriodController extends Controller
         $logs->user_fk = $request->user_fk;
         $logs->save();
 
+
         return response()->json([
             "status"            =>          200,
         ]);
     }
 
     public function FetchSalary (){
-        $data = SalaryPeriod::orderBy('from_date','ASC')->get();
+        $data = SalaryPeriod::orderBy('created_at','DESC')->get();
 
         return response()->json([
             "status"            =>          200,

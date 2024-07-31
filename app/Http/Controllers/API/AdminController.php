@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Models\EmployeeType;
 use App\Models\User;
 use App\Models\Employee;
 use App\Models\Department;
@@ -54,11 +55,13 @@ class AdminController extends Controller
     public function FetchDataStatus(){
         $data = Department::where('status',1)->orderBy('department','ASC')->get();
         $total_days = NumberDays::first();
+        $employee = EmployeeType::where('status',1)->orderBy('employee_type','ASC')->get();
 
         return response()->json([
             "status"                =>          200,
             "data"                  =>          $data,
             "days"                  =>          $total_days,
+            "employee"              =>          $employee,
         ]);
     }
     
@@ -66,11 +69,12 @@ class AdminController extends Controller
     public function AddDepartment (Request $request) {
 
         $validate  = Validator::make($request->all(), [
-            "department"            =>          "required",
+            "department"            =>          "required|unique:tbl_department,department",
         ]);
 
         if($validate->fails()) {
             return response()->json([
+                "status"            =>          404,
                 "error"             =>          $validate->messages(),
             ]);
         }
@@ -188,16 +192,18 @@ class AdminController extends Controller
             "department"            =>          "required",
             "specific_role"         =>          "required",
             "salary"                =>          "required",
+            "employee_type"         =>          "required",
         ],[
-            "fname.required"        =>          "First Name field is required",
-            "lname.required"        =>          "Last Name field is required",
-            "current_adr.required"  =>          "Current Address feild is required",
-            "perma_adr.required"    =>          "Permanent Address feild is required",
-            "contact.required"      =>          "Contact feild is required",
-            "birthdate.required"    =>          "Birthdate field is required",
-            "department.required"   =>          "Departemnt field is required",
+            "fname.required"            =>          "First Name field is required",
+            "lname.required"            =>          "Last Name field is required",
+            "current_adr.required"      =>          "Current Address feild is required",
+            "perma_adr.required"        =>          "Permanent Address feild is required",
+            "contact.required"          =>          "Contact feild is required",
+            "birthdate.required"        =>          "Birthdate field is required",
+            "department.required"       =>          "Departemnt field is required",
             "specific_role.required"    =>      "Specific Role field is required",
-            "salary.required"       =>          "Salary field is required",
+            "salary.required"           =>          "Salary field is required",
+            "employee_type.required"    =>      "Employee Type field is required",
             
         ]);
 
@@ -239,6 +245,7 @@ class AdminController extends Controller
             $employee->per_day = $request->salary;
             $employee->company_fk = $company_code->id;
             $employee->user_fk = $user->id;
+            $employee->employee_type_fk = $request->employee_type;
             $employee->save();
 
             $contribution = new Contribution;
@@ -400,5 +407,42 @@ class AdminController extends Controller
                 "status"            =>          200,
             ]);
         }
+    }
+
+    public function AddEmployeeType(Request $request){
+
+        $validate = Validator::make($request->all(), [
+            "employee_type"             =>          "required|unique:tbl_employee_type,employee_type",
+        ]);
+        if($validate->fails()) {
+            return response()->json([
+                "error"             =>          $validate->messages(),
+            ]);
+        }
+        else{
+            $employee_type = new EmployeeType;
+            $employee_type->employee_type = $request->employee_type;
+            $employee_type->status = 1;
+            $employee_type->save();
+
+            $logs = new ActivityLogs;
+            $logs->description = "Employee Type" . $request->employee_type . "Added";
+            $logs->user_fk = $request->user_fk;
+            $logs->save();
+
+            return response()->json([
+                "status"            =>          200,
+            ]);
+        }
+    }
+
+    public function EmployeeTypeList(){
+
+        $data = EmployeeType::orderBy('employee_type','ASC')->get();
+        return response()->json([
+            "status"            =>          200,
+            "data"              =>          $data,
+        ]);
+
     }
 }

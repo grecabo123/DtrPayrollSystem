@@ -19,6 +19,8 @@ import { PrimeIcons } from 'primereact/api';
 
 function RegisterEmployee() {
 
+   
+
     const [Department, setDepartment] = useState([]);
     const webcamRef = useRef(null);
     const [capturedImage, setCapturedImage] = useState(null);
@@ -47,6 +49,8 @@ function RegisterEmployee() {
     const [deparmtnepick, setDepartmentpick] = useState([])
     const [birthdatedata, setbirthdate] = useState(null);
     const [days, setdays] = useState([])
+    const [EmployeeType, setEmployeeType] = useState([])
+    const [EmployeeTypePick, setEmployeeTypePick] = useState([])
     const [loading, setLoading] = useState(true)
     const handleinput = (e) => {
         e.persist();
@@ -58,6 +62,7 @@ function RegisterEmployee() {
             if (res.data.status === 200) {
                 setDepartment(res.data.data);
                 setdays(res.data.days);
+                setEmployeeType(res.data.employee)
             }
             setLoading(false)
         }).catch((error) => {
@@ -70,6 +75,12 @@ function RegisterEmployee() {
     const ListDept = Department.map((data) => {
         return (
             { label: data.department, value: data.id }
+        )
+    })
+
+    const employee_type_data = EmployeeType.map((data) => {
+        return (
+            {label: data.employee_type, value: data.id}
         )
     })
 
@@ -90,8 +101,12 @@ function RegisterEmployee() {
         setCapturedImage("")
     }
 
+   
+
     const RegisterEmployee = (e) => {
         e.preventDefault();
+
+
 
         const form = new FormData;
         const salar = Salary || 0 * 12 / days.days
@@ -110,9 +125,10 @@ function RegisterEmployee() {
         form.append('philhealth', Register.philhealth);
         form.append('pagibig', Register.pagibig);
         form.append('tin', Register.tin);
-        form.append('salary', salar == 0 ? "" : salar);
-        form.append('birthdate', birthdatedata == null ? "" : moment(birthdatedata).format('MMM DD YYYY') );
+        form.append('salary', salar * 12 / days.days );
+        form.append('birthdate', birthdatedata == null ? "" : moment(birthdatedata).format('MMM DD YYYY'));
         form.append('department', deparmtnepick);
+        form.append('employee_type',EmployeeTypePick)
         form.append('year', moment().format('YYYY'));
         form.append('user_fk', localStorage.getItem('auth_id'));
         form.append('capture', capturedImage == null ? "" : capturedImage);
@@ -124,18 +140,35 @@ function RegisterEmployee() {
                 setDepartmentpick([]);
                 setSalary(null)
                 setCapturedImage("");
+                setEmployeeTypePick([])
+                setRegister({
+                    fname: "",
+                    mname: "",
+                    lname: "",
+                    current_adr: "",
+                    perma_adr: "",
+                    contact: "",
+                    email: "",
+                    specific_role: "",
+                    monthly: "",
+                    sss: "",
+                    philhealth: "",
+                    tin: "",
+                    pagibig: "",
+                    error: [],
+                })
 
-               
+
 
             }
             else {
-                setRegister({...Register, error: res.data.error})
+                setRegister({ ...Register, error: res.data.error })
             }
             setBtn(false)
         }).catch((error) => {
             if (error.response.status === 500) {
                 swal("Warning", error.response.statusText, 'warning');
-            setBtn(false)
+                setBtn(false)
 
             }
         })
@@ -219,7 +252,7 @@ function RegisterEmployee() {
                                                 <label htmlFor="" className="form-label">
                                                     <span className='text-danger'>*</span>Permanent Address
                                                 </label>
-                                                <InputText className={`w-100 p-inputtext-sm ${Register.error.perma_adr ? 'p-invalid' : ''} ` } onChange={handleinput} name='perma_adr' />
+                                                <InputText className={`w-100 p-inputtext-sm ${Register.error.perma_adr ? 'p-invalid' : ''} `} onChange={handleinput} name='perma_adr' />
                                                 <small className='text-danger'>{Register.error.perma_adr}</small>
                                             </div>
                                             <div className="col-lg-6 col-md-12 col-sm-12 mb-2">
@@ -248,9 +281,16 @@ function RegisterEmployee() {
                                             </Divider>
                                             <div className="col-lg-6 col-md-12 col-sm-12 mb-2">
                                                 <label htmlFor="" className="form-label">
+                                                    <span className='text-danger'>*</span>Employee Type
+                                                </label>
+                                                <Dropdown filter value={EmployeeTypePick} onChange={(e) => setEmployeeTypePick(e.value)} options={employee_type_data} className={`w-100 p-inputtext-sm ${Register.error.employee_type ? 'p-invalid' : ''}`} placeholder='Employee Type' />
+                                                <small className='text-danger'>{Register.error.employee_type}</small>
+                                            </div>
+                                            <div className="col-lg-6 col-md-12 col-sm-12 mb-2">
+                                                <label htmlFor="" className="form-label">
                                                     <span className='text-danger'>*</span>Department
                                                 </label>
-                                                <Dropdown value={deparmtnepick} onChange={(e) => setDepartmentpick(e.value)} options={ListDept} className={`w-100 p-inputtext-sm ${Register.error.department ? 'p-invalid' : ''}`} placeholder='Choose Department' />
+                                                <Dropdown filter value={deparmtnepick} onChange={(e) => setDepartmentpick(e.value)} options={ListDept} className={`w-100 p-inputtext-sm ${Register.error.department ? 'p-invalid' : ''}`} placeholder='Choose Department' />
                                                 <small className='text-danger'>{Register.error.department}</small>
                                             </div>
                                             <div className="col-lg-6 col-md-12 col-sm-12 mb-2">

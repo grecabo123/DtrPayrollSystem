@@ -18,5 +18,6 @@ class Employee extends Model
         "employee_code",
         "per_day",
         "user_fk",
+        "employee_type_fk",
     ];
 }

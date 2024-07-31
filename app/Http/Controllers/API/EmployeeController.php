@@ -37,10 +37,12 @@ class EmployeeController extends Controller
     public function ListofEmployee(){
 
         $employee = User::join('tbl_employee','tbl_employee.user_fk','=','users.id')
+        ->leftJoin('tbl_department','tbl_department.id','=','tbl_employee.department_fk')
                 ->join('tbl_company_info','tbl_company_info.id','=','tbl_employee.company_fk')
                 ->selectRaw('users.first_name,users.id,users.name,users.email,tbl_employee.specific_role,
-                users.role,users.status,users.created_at,tbl_company_info.company_code,tbl_employee.employee_code,tbl_employee.image_capture')
-            ->orderBy('users.first_name')->where('users.role',"!=",1)->get();
+                users.role,users.status,users.created_at,tbl_company_info.company_code,tbl_employee.employee_code,tbl_employee.image_capture,
+                tbl_department.department')
+            ->orderBy('users.name','ASC')->where('users.role',"!=",1)->get();
 
         return response()->json([
             "status"            =>          200,

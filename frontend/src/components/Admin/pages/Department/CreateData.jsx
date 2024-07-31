@@ -7,6 +7,7 @@ import { Column } from 'primereact/column'
 import { DataTable } from 'primereact/datatable'
 import { Dialog } from 'primereact/dialog'
 import { InputText } from 'primereact/inputtext'
+import { Panel } from 'primereact/panel'
 import { Toast } from 'primereact/toast'
 import React, { useEffect, useRef, useState } from 'react'
 import swal from 'sweetalert'
@@ -16,7 +17,11 @@ function CreateData() {
     const [loading, setloading] = useState(true)
     const [visible, setVisible] = useState(false);
     const [DepartmentAdd, setDepartmentAdd] = useState(false)
-    const [NameDepartment, setDepartment] = useState([])
+    const [btndis, setBtn] = useState(false)
+    const [NameDepartment, setDepartment] = useState({
+        department: "",
+        error: [],
+    })
     const [DepartmentFetch, setFetch] = useState([])
     const toast = useRef();
     useEffect(() => {
@@ -40,11 +45,18 @@ function CreateData() {
         })
     }
 
+
+    const handleinput = (e) => {
+        e.persist();
+        setDepartment({...NameDepartment, [e.target.name] : e.target.value});
+    }
+
     const DepartmentRegister = (e) => {
         e.preventDefault();
+        setBtn(true)
         const data = {
             id: localStorage.getItem('auth_id'),
-            department: NameDepartment,
+            department: NameDepartment.department
         }
         axios.post(`/api/AddDepartment`, data).then(res => {
             if (res.data.status === 200) {
@@ -52,10 +64,22 @@ function CreateData() {
                 toast.current.show({ severity: "success", summary: "Added Data", detail: "Successfully" });
                 DepartmentData();
                 document.getElementById('depart').reset();
+                setBtn(false)
+                setDepartment({
+                    department: "",
+                    error: [],
+                });
+            }
+            else if(res.data.status === 404){
+                setDepartment({...NameDepartment, error: res.data.error})
+                setBtn(false)
+
             }
         }).catch((error) => {
             if (error.response.status === 500) {
                 swal("Warning", error.response.statusText, 'warning');
+                setBtn(false)
+
             }
         })
     }
@@ -74,7 +98,7 @@ function CreateData() {
 
     const ActionButton = (DepartmentFetch) => {
         return (
-            <>
+            <div>
                 <Button 
                 className={DepartmentFetch.status === 1 ? `m-2 p-button-sm p-button-warning` : `m-2 p-button-sm p-button-info`} 
                 label={DepartmentFetch.status === 1 ? "Deactivate" : "Activate"} 
@@ -88,7 +112,7 @@ function CreateData() {
                     label='Delete Department'
                     data-id={DepartmentFetch.id}
                 />
-            </>
+            </div>
         )
     }
 
@@ -130,19 +154,22 @@ function CreateData() {
                 <Button className='p-button-sm p-button-info' icon={PrimeIcons.PLUS} onClick={(e) => setVisible(true)} label='Create Department' />
             </div>
             <div className="mt-3">
-                <Card title="Department List">
+                <Panel header="Department List">
                     <DataTable
                         value={DepartmentFetch}
                         loading={loading}
                         rows={10}
                         paginator
                         paginatorLeft
+                        size='small'
+                        selectionMode={'single'}
                     >
+                        <Column header="#" body={(data,options) => options.rowIndex +1}></Column>
                         <Column field='department' header="Department"></Column>
                         <Column field='status' body={StatusDepart} header="Status"></Column>
                         <Column field='id' body={ActionButton} header="Action"></Column>
                     </DataTable>
-                </Card>
+                </Panel>
             </div>
 
             <Dialog onHide={HideModal} header="Add Department" draggable={false} position='top' visible={visible} style={{ width: "50vw" }}>
@@ -150,12 +177,13 @@ function CreateData() {
                     <div className="row">
                         <div className="col-lg-12 mb-2">
                             <label htmlFor="" className="form-label">
-                                Department
+                                <span className='text-danger'>*</span>Department Name
                             </label>
-                            <InputText onChange={(e) => setDepartment(e.target.value)} className='p-inputtext-sm w-100' name='department' />
+                            <InputText onChange={handleinput} className={`p-inputtext-sm w-100 ${NameDepartment.error.department ? 'p-invalid' : ''}`} name='department' />
+                            <small className='text-danger'>{NameDepartment.error.department}</small>
                         </div>
                         <div className="mt-3 d-flex justify-content-end">
-                            <Button className='p-button-info p-button-sm' label='Register Department' loading={DepartmentAdd} />
+                            <Button  className='p-button-info p-button-sm' label='Register Department' loading={btndis} />
                         </div>
                     </div>
                 </form>

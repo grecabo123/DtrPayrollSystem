@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Link, Redirect, Route, Switch, useHistory } from 'react-router-dom/cjs/react-router-dom.min'
 import AdminRoutes from '../../routes/AdminRoutes'
 import { FcCalendar, FcSurvey, FcOpenedFolder, FcHome, FcSms, FcPositiveDynamic, FcManager, FcHighPriority, FcCheckmark, FcFolder, FcFeedback, FcBiohazard, FcAssistant, FcBarChart, FcFactory, FcLineChart, FcInfo, FcDeployment, FcCollaboration, FcSettings, FcPlanner, FcSportsMode, FcFile, FcRight, FcComments, FcPlus } from 'react-icons/fc'
-import { FaArchive, FaBars, FaBox, FaBuilding, FaCalculator, FaCalendar, FaCalendarCheck, FaCalendarPlus, FaCaretDown, FaCaretRight, FaChartLine, FaClock, FaCog, FaCogs, FaDatabase, FaDeskpro, FaDesktop, FaDollarSign, FaEnvelope, FaFolder, FaFolderOpen, FaHeart, FaHome, FaMoneyBill, FaPen, FaPenAlt, FaPiggyBank, FaStore, FaUserAlt, FaUserCog, FaUsers } from 'react-icons/fa'
+import { FaArchive, FaBars, FaBox, FaBuilding, FaCalculator, FaCalendar, FaCalendarCheck, FaCalendarPlus, FaCaretDown, FaCaretRight, FaChartLine, FaClock, FaCog, FaCogs, FaDatabase, FaDeskpro, FaDesktop, FaDollarSign, FaEnvelope, FaFolder, FaFolderOpen, FaHeart, FaHome, FaMoneyBill, FaPen, FaPenAlt, FaPiggyBank, FaRegBuilding, FaStore, FaUserAlt, FaUserCog, FaUsers } from 'react-icons/fa'
 import axios from 'axios'
 import swal from 'sweetalert'
 import { Menubar } from 'primereact/menubar'
@@ -11,13 +11,16 @@ import { Avatar } from 'primereact/avatar'
 import { Menu } from 'primereact/menu'
 import { Skeleton } from 'primereact/skeleton'
 import { Image } from 'primereact/image'
-
+import { Sidebar } from 'primereact/sidebar';
 import { SiWebtrees } from "react-icons/si";
+import { Divider } from 'primereact/divider'
+import { Button } from 'primereact/button'
 
 function Admin() {
     const menu = useRef(null);
     const [loading, setLoading] = useState(true)
     const [Details, setDetails] = useState([]);
+    const [visible, setVisible] = useState(false)
     useEffect(() => {
         axios.get(`/api/CompanyDetails`).then(res => {
             if (res.data.status === 200) {
@@ -115,11 +118,11 @@ function Admin() {
     ];
 
     let items_list = [
-        {
-            label: 'Settings', icon: 'pi pi-fw pi-cog', command: () => {
-                history.push(`/admin/settings/config`)
-            }
-        },
+        // {
+        //     label: 'Settings', icon: 'pi pi-fw pi-cog', command: () => {
+        //         history.push(`/admin/settings/config`)
+        //     }
+        // },
         {
             label: 'My Account', icon: 'pi pi-fw pi-user', command: () => {
                 history.push(`admin/myaccount`)
@@ -148,7 +151,8 @@ function Admin() {
                                         <img src={`${import.meta.env.VITE_API_BASE_URL}/${Details.company_logo}`} alt="" width={100} />
                                     </div>
                                     <div className="mt-0">
-                                        <h5 className='text-center text-light'>SUPER ADMIN </h5>
+                                        <h5 className='text-center text-light'>SUPER ADMIN <br /> DTR & PAYROLL </h5>
+                                        <Divider></Divider>
                                     </div>
                                     <ul className="sidebar-nav">
                                         <li className="sidebar-header">
@@ -178,8 +182,6 @@ function Admin() {
                                                 </li>
                                             </ul>
                                         </li>
-
-
                                         <li className="sidebar-item">
                                             <a href="#" className="sidebar-link collapsed" data-bs-target="#calendar" data-bs-toggle="collapse"
                                                 aria-expanded="false"><FcCalendar size={20} />
@@ -225,6 +227,22 @@ function Admin() {
                                             </ul>
                                         </li>
 
+                                        <li className="sidebar-item">
+                                            <a href="#" className="sidebar-link collapsed" data-bs-target="#department" data-bs-toggle="collapse"
+                                                aria-expanded="false"><FaRegBuilding size={20} />
+                                                <span>Department</span>
+                                            </a>
+                                            <ul id="department" className="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                                                <li className="sidebar-item">
+                                                    <Link to="/admin/department/list" className="sidebar-link"><span className='child'>Add Department</span></Link>
+                                                </li>
+                                                <li className="sidebar-item">
+                                                    <Link to="/admin/contribution/pagibig" className="sidebar-link"><span className='child'>Lock Department</span></Link>
+                                                </li>
+
+                                            </ul>
+                                        </li>
+
 
 
 
@@ -257,7 +275,7 @@ function Admin() {
                                             </a>
                                             <ul id="set_contri" className="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                                                 <li className="sidebar-item">
-                                                    <Link to="/admin/registered/user" className="sidebar-link"><span className='child'>Employee List</span></Link>
+                                                    <Link to="/admin/contribution/users/settings" className="sidebar-link"><span className='child'>Employee List</span></Link>
                                                 </li>
 
                                             </ul>
@@ -269,14 +287,12 @@ function Admin() {
                                             </a>
                                             <ul id="calendar_config" className="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                                                 <li className="sidebar-item">
-                                                    <Link to="/admin/registered/user" className="sidebar-link"><span className='child'>Customer</span></Link>
+                                                    <Link to="/admin/calendar/salary" className="sidebar-link"><span className='child'>Salary Period</span></Link>
                                                 </li>
                                                 <li className="sidebar-item">
-                                                    <Link to="/admin/registered/business" className="sidebar-link"><span className='child'>Business</span></Link>
+                                                    <Link to="/admin/calendar/schedule" className="sidebar-link"><span className='child'>Calendar Schedule</span></Link>
                                                 </li>
-                                                <li className="sidebar-item">
-                                                    <Link to="/admin/registered/business" className="sidebar-link"><span className='child'> Lock Accounts</span></Link>
-                                                </li>
+
                                             </ul>
                                         </li>
 
@@ -295,35 +311,27 @@ function Admin() {
                                                     <Link to="/admin/registered/business" className="sidebar-link"><span className='child'>Account Access</span></Link>
                                                 </li>
                                                 <li className="sidebar-item">
-                                                    {/* <Link to="/admin/registered/business" className="sidebar-link"><span className='child'> </span></Link> */}
+                                                    <Link to="/admin/settings/employee-type" className="sidebar-link"><span className='child'>Employee Type </span></Link>
                                                 </li>
                                             </ul>
                                         </li>
-
-
-
-
 
                                         <li className="sidebar-header">
                                             Logs History
                                         </li>
 
                                         <li className="sidebar-item">
-                                            <a href="/admin" className="sidebar-link">
-                                                <FaDesktop size={20} className=' align-middle' />
+                                            <Link to="/admin/logs" className="sidebar-link">
+                                                <FaDesktop size={20} className='align-middle' />
                                                 <span>Activity Logs</span>
-                                            </a>
+                                            </Link>
                                         </li>
-
-
                                     </ul>
-
-
                                 </div>
                             </aside>
                             <div className="main">
                                 <div className="content px-1">
-                                    <nav className="navbar navbar-expand p-2">
+                                    <nav className="navbar navbar-expand">
                                         <div className="container-fluid">
                                             <div className="navbar-collapse navbar">
                                                 <span className='d-md-block d-none'></span>
@@ -338,31 +346,214 @@ function Admin() {
                                         </div>
                                     </nav>
 
-                                    <div className=" wrapper d-flex flex-column min-vh-100">
-                                        <div className="">
-                                            <Switch>
-                                                {
-                                                    AdminRoutes.map((routes, id) => {
-                                                        return (
-                                                            routes.component && (
-                                                                <Route
-                                                                    key={id}
-                                                                    path={routes.path}
-                                                                    exact={routes.exact}
-                                                                    name={routes.name}
-                                                                    render={(props) => <routes.component {...props} />}
-                                                                />
-                                                            )
+                                    <div className="wrapper d-flex flex-column min-vh-100">
+                                        <Switch>
+                                            {
+                                                AdminRoutes.map((routes, id) => {
+                                                    return (
+                                                        routes.component && (
+                                                            <Route
+                                                                key={id}
+                                                                path={routes.path}
+                                                                exact={routes.exact}
+                                                                name={routes.name}
+                                                                render={(props) => <routes.component {...props} />}
+                                                            />
                                                         )
-                                                    })
-                                                }
-                                                <Redirect from='/admin' to="/admin/dashboard" />
-                                            </Switch>
-                                        </div>
+                                                    )
+                                                })
+                                            }
+                                            <Redirect from='/admin' to="/admin/dashboard" />
+                                        </Switch>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+                        <Sidebar visible={visible} onHide={() => setVisible(false)}>
+                            <div className="">
+                                <div className="sidebar-logo d-flex justify-content-center align-items-center">
+                                    <img src={`${import.meta.env.VITE_API_BASE_URL}/${Details.company_logo}`} alt="" width={100} />
+                                </div>
+                                <div className="mt-0">
+                                    <h5 className='text-center text-light'>SUPER ADMIN <br /> DTR & PAYROLL </h5>
+                                    <Divider></Divider>
+                                </div>
+                                <ul className="sidebar-nav">
+                                    <li className="sidebar-header">
+                                        Pages
+                                    </li>
+                                    <li className="sidebar-item">
+                                        <a href="/admin" className="sidebar-link">
+                                            <FcHome size={20} className=' align-middle' />
+                                            <span>Dashboard</span>
+                                        </a>
+                                    </li>
+
+                                    <li className="sidebar-item">
+                                        <a href="#" className="sidebar-link collapsed" data-bs-target="#posts" data-bs-toggle="collapse"
+                                            aria-expanded="false"><FaUsers size={20} />
+                                            <span>Accounts</span>
+                                        </a>
+                                        <ul id="posts" className="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                                            <li className="sidebar-item">
+                                                <Link to="/admin/employee/add" className="sidebar-link"><span className='child'>Register Employee</span></Link>
+                                            </li>
+                                            <li className="sidebar-item">
+                                                <Link to="/admin/employee/list" className="sidebar-link"><span className='child'>List of Employee</span></Link>
+                                            </li>
+                                            <li className="sidebar-item">
+                                                <Link to="/admin/registered/business" className="sidebar-link"><span className='child'> Lock Accounts</span></Link>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li className="sidebar-item">
+                                        <a href="#" className="sidebar-link collapsed" data-bs-target="#calendar" data-bs-toggle="collapse"
+                                            aria-expanded="false"><FcCalendar size={20} />
+                                            <span>Calendar</span>
+                                        </a>
+                                        <ul id="calendar" className="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                                            <li className="sidebar-item">
+                                                <Link to="/admin/calendar/create" className="sidebar-link"><span className='child'>Create Schedule</span></Link>
+                                            </li>
+                                            <li className="sidebar-item">
+                                                <Link to="/admin/calendar/schedule" className="sidebar-link"><span className='child'>List of Schedule</span></Link>
+                                            </li>
+                                            <li className="sidebar-item">
+                                                <Link to="/admin/calendar/days" className="sidebar-link"><span className='child'> Number of Duty</span></Link>
+                                            </li>
+                                            <li className="sidebar-item">
+                                                <Link to="/admin/calendar/salary" className="sidebar-link"><span className='child'> Salary Schedule</span></Link>
+                                            </li>
+
+                                        </ul>
+                                    </li>
+
+
+
+                                    <li className="sidebar-item">
+                                        <a href="#" className="sidebar-link collapsed" data-bs-target="#contrinution" data-bs-toggle="collapse"
+                                            aria-expanded="false"><FaPiggyBank size={20} />
+                                            <span>Contribution</span>
+                                        </a>
+                                        <ul id="contrinution" className="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                                            <li className="sidebar-item">
+                                                <Link to="/admin/contribution/sss" className="sidebar-link"><span className='child'>SSS</span></Link>
+                                            </li>
+                                            <li className="sidebar-item">
+                                                <Link to="/admin/contribution/pagibig" className="sidebar-link"><span className='child'>Pagibig</span></Link>
+                                            </li>
+                                            <li className="sidebar-item">
+                                                <Link to="/admin/contribution/philhealth" className="sidebar-link"><span className='child'>Philhealth</span></Link>
+                                            </li>
+                                            <li className="sidebar-item">
+                                                <Link to="/admin/contribution/tin" className="sidebar-link"><span className='child'>TIN</span></Link>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                    <li className="sidebar-item">
+                                        <a href="#" className="sidebar-link collapsed" data-bs-target="#department" data-bs-toggle="collapse"
+                                            aria-expanded="false"><FaRegBuilding size={20} />
+                                            <span>Department</span>
+                                        </a>
+                                        <ul id="department" className="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                                            <li className="sidebar-item">
+                                                <Link to="/admin/department/list" className="sidebar-link"><span className='child'>Add Department</span></Link>
+                                            </li>
+                                            <li className="sidebar-item">
+                                                <Link to="/admin/contribution/pagibig" className="sidebar-link"><span className='child'>Lock Department</span></Link>
+                                            </li>
+
+                                        </ul>
+                                    </li>
+
+
+
+
+                                    <li className="sidebar-header">
+                                        Reports
+                                    </li>
+                                    <li className="sidebar-item">
+                                        <a href="#" className="sidebar-link collapsed" data-bs-target="#report" data-bs-toggle="collapse"
+                                            aria-expanded="false"><FaUserCog color='#35A4CC' size={20} />
+                                            <span>Employee Data</span>
+                                        </a>
+                                        <ul id="report" className="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                                            <li className="sidebar-item">
+                                                <Link to="/admin/registered/user" className="sidebar-link"><span className='child'>DTR</span></Link>
+                                            </li>
+                                            <li className="sidebar-item">
+                                                <Link to="/admin/registered/business" className="sidebar-link"><span className='child'>Payslip</span></Link>
+                                            </li>
+
+                                        </ul>
+                                    </li>
+                                    <li className="sidebar-header">
+                                        Settings
+                                    </li>
+
+                                    <li className="sidebar-item">
+                                        <a href="#" className="sidebar-link collapsed" data-bs-target="#set_contri" data-bs-toggle="collapse"
+                                            aria-expanded="false"><FaCog size={20} />
+                                            <span>Contribution Settings</span>
+                                        </a>
+                                        <ul id="set_contri" className="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                                            <li className="sidebar-item">
+                                                <Link to="/admin/contribution/users/settings" className="sidebar-link"><span className='child'>Employee List</span></Link>
+                                            </li>
+
+                                        </ul>
+                                    </li>
+                                    <li className="sidebar-item">
+                                        <a href="#" className="sidebar-link collapsed" data-bs-target="#calendar_config" data-bs-toggle="collapse"
+                                            aria-expanded="false"><FaCogs size={20} />
+                                            <span>Calendar Config</span>
+                                        </a>
+                                        <ul id="calendar_config" className="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                                            <li className="sidebar-item">
+                                                <Link to="/admin/calendar/salary" className="sidebar-link"><span className='child'>Salary Period</span></Link>
+                                            </li>
+                                            <li className="sidebar-item">
+                                                <Link to="/admin/calendar/schedule" className="sidebar-link"><span className='child'>Calendar Schedule</span></Link>
+                                            </li>
+
+                                        </ul>
+                                    </li>
+
+
+
+                                    <li className="sidebar-item">
+                                        <a href="#" className="sidebar-link collapsed" data-bs-target="#AppSetings" data-bs-toggle="collapse"
+                                            aria-expanded="false"><SiWebtrees size={20} />
+                                            <span>App Config</span>
+                                        </a>
+                                        <ul id="AppSetings" className="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                                            <li className="sidebar-item">
+                                                <Link to="/admin/settings/config" className="sidebar-link"><span className='child'>App Settings</span></Link>
+                                            </li>
+                                            <li className="sidebar-item">
+                                                <Link to="/admin/registered/business" className="sidebar-link"><span className='child'>Account Access</span></Link>
+                                            </li>
+                                            <li className="sidebar-item">
+                                                <Link to="/admin/settings/employee-type" className="sidebar-link"><span className='child'>Employee Type </span></Link>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                    <li className="sidebar-header">
+                                        Logs History
+                                    </li>
+
+                                    <li className="sidebar-item">
+                                        <Link to="/admin/logs" className="sidebar-link">
+                                            <FaDesktop size={20} className='align-middle' />
+                                            <span>Activity Logs</span>
+                                        </Link>
+                                    </li>
+                                </ul>
+                            </div>
+                        </Sidebar>
                     </React.Fragment>
             }
         </>

@@ -188,3 +188,15 @@ a.sidebar-link {
   top: 1px;
   position: relative;
 }
+
+.navbar-expand{
+  padding: 0px !important;
+}
+
+.p-datatable.p-datatable-striped .p-datatable-tbody > tr.p-row-odd{
+  background: #f3f2f2 !important;
+}
+
+.p-sidebar{
+  background:  #2A1F1F !important
+}

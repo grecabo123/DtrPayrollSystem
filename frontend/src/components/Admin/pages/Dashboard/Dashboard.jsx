@@ -118,6 +118,7 @@ function Dashboard() {
 
     return (
         <div className='container-fluid'>
+            <h4 className='text-secondary'>Dashboard</h4>
             <div className="row">
                 <div className="col-lg-3 col-sm-12 mb-2">
                     <motion.div
@@ -208,6 +209,7 @@ function Dashboard() {
                         
                         loading={loading}   emptyMessage="No Employee Found." header={header} dataKey='id' value={Employee} filters={filters} globalFilterFields={['name', 'specific_role','employee_code']} paginator paginatorLeft rows={10}>
                             {/* <Column field='name' body={Image_Name} filterField='name' header="Name of Employee"></Column> */}
+                            <Column header="#" body={(data,options) => options.rowIndex + 1}></Column>
                             <Column field='company_code' filterField='employee_code' body={EmployeeCode} header="Employee ID"></Column>
                             <Column field='role' body={AccountRole} header="Account Role"></Column>
                             <Column field='specific_role' filterField='specific_role' header="Specific Role"></Column>

@@ -60,6 +60,8 @@ function RegisterEmployee() {
         })
     }, []);
 
+    
+
     const ListDept = Department.map((data) => {
         return (
             { label: data.department, value: data.id }
@@ -82,6 +84,8 @@ function RegisterEmployee() {
     const RemoveImage = () => {
         setCapturedImage(null)
     }
+
+    
 
     const RegisterEmployee = (e) => {
         e.preventDefault();

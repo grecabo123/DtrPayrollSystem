@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\AccessController;
 use App\Http\Controllers\API\CompanyController;
+use App\Http\Controllers\API\ContributionController;
 use App\Http\Controllers\API\EvaluationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -110,6 +111,15 @@ Route::get('EvaluationForm',[EvaluationController::class, 'EvaluationForm']);
 // Email Functions
 Route::post('SendEmail',[EmailController::class, 'SendEmail']);
 Route::get('FetchMessage/{id}',[EmailController::class, 'FetchMessage']);
+
+
+
+Route::post('AddEmployeeType',[AdminController::class, 'AddEmployeeType']);
+Route::get('EmployeeTypeList',[AdminController::class,'EmployeeTypeList']);
+
+
+// Userss Seetings for Contriutions
+Route::post('UsersSettings',[ContributionController::class, 'UsersSettings']);
 
 
 

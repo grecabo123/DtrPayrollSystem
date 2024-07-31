@@ -165,6 +165,7 @@ function SalaryPeriod() {
                     selectionMode={'single'}
                     size='small'
                     paginatorLeft rows={10}>
+                    <Column header="#" body={(data,options) => options.rowIndex + 1}></Column>
                     <Column field='salary_period' header="Salary Period"></Column>
                     <Column field='from_date' body={(SalaryData) => <span>{moment(SalaryData.from_date).format('MMMM DD YYYY')}</span>} header="From Date"></Column>
                     <Column field='end_date' body={(SalaryData) => <span>{moment(SalaryData.end_date).format('MMMM DD YYYY')}</span>} header="End Date"></Column>
