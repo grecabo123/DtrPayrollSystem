@@ -196,7 +196,7 @@ function WebConfig() {
                                                             Infomation.company_logo == null ?
                                                                 <span>NO LOGO</span>
                                                                 :
-                                                                <Image src={`http://127.0.0.1:8000/${Infomation.company_logo}`} width='150' />
+                                                                <Image src={`${import.meta.env.VITE_API_BASE_URL}/${Infomation.company_logo}`} width='150' />
                                                         }
                                                     </Card>
                                                     <div className="mt-3">

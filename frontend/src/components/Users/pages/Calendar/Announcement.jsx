@@ -32,7 +32,7 @@ function Announcement() {
 
 
     return (
-        <div>
+        <div className='col-sm-12'>
            <Panel header="Announcement">
            <Calendar
                 localizer={localizer}

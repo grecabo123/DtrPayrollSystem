@@ -178,7 +178,9 @@ function Evaluation() {
                 <Column field='id' body={ActionButton} header="Action"></Column>
             </DataTable>
             
-            <Dialog header="Add Core Values" onHide={() => setVisible(false)} visible={visible} position='top' draggable={false} style={{width: "50vw"}}>
+            <Dialog header="Add Core Values" onHide={() => setVisible(false)} visible={visible} position='top' draggable={false} 
+                style={{ width: '50vw' }} breakpoints={{ '960px': '75vw', '641px': '100vw' }}
+                >
                 <form onSubmit={AddCore} id='form'>
                     <div className="row">
                         <div className="col-lg-12 mb-2">
@@ -200,8 +202,10 @@ function Evaluation() {
                 </form>
             </Dialog>
 
-            <Dialog header={details.indicator == 1 ? "Edit Core Values" : "Remove Core Values"} position='top' visible={visibledetails} style={{width: "50vw"}} draggable={false}
+            <Dialog header={details.indicator == 1 ? "Edit Core Values" : "Remove Core Values"} position='top' visible={visibledetails}  draggable={false}
                 onHide={() => setVisibleDetails(false)}
+
+                style={{ width: '50vw' }} breakpoints={{ '960px': '75vw', '641px': '100vw' }}
             >
                 <form onSubmit={formUpdate} id='form'>
                 <div className="container-fluid">

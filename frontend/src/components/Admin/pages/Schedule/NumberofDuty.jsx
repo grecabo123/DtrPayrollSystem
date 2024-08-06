@@ -163,6 +163,7 @@ function NumberofDuty() {
                 <DataTable loading={loading} value={numdata} paginator 
                     size='small'
                     selectionMode={'single'}
+                    
                 paginatorLeft rows={10}>
                     <Column field='days' header="Total"></Column>
                     <Column field='id' body={ActionButton} header="Actions"></Column>
@@ -184,7 +185,7 @@ function NumberofDuty() {
                 </div>
             </Panel>
 
-            <Dialog header="Add Days" visible={visible} onHide={HideModal} position='top' draggable={false} style={{ width: "50vw" }} >
+            <Dialog header="Add Days" visible={visible} onHide={HideModal} position='top' draggable={false} style={{ width: '50vw' }} breakpoints={{ '960px': '75vw', '641px': '100vw' }} >
                 <form onSubmit={AddDays} id='form'>
                     <div className="container">
                         <div className="row">
@@ -202,7 +203,7 @@ function NumberofDuty() {
                 </form>
             </Dialog>
 
-            <Dialog onHide={HideModal} header="Edit Number of Days" visible={ModalDisplay} position='top' draggable={false} style={{ width: '50vw' }}>
+            <Dialog onHide={HideModal} header="Edit Number of Days" visible={ModalDisplay} position='top' draggable={false} style={{ width: '50vw' }} breakpoints={{ '960px': '75vw', '641px': '100vw' }}>
                 <form onSubmit={UpdateDays} id='form'>
                     <div className="container">
                         <div className="row">

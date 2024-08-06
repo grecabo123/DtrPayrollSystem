@@ -77,8 +77,9 @@ function ListEmployee() {
                     globalFilterFields={['company_code','name','department','specific_role']}
                     value={Employee}  paginator paginatorLeft rows={10}>
                         <Column body={(data,options) => options.rowIndex + 1} header="#"></Column>
-                        <Column body={(Employee) => <Image src={Employee.image_capture} width='60' preview />} header="Image"></Column>
+                        {/* <Column body={(Employee) => <Image src={Employee.image_capture} width='60' preview />} header="Image"></Column> */}
                         <Column field='' filterField='company_code' body={(Employee) => Employee.company_code+' '+Employee.employee_code} header="Employee ID"></Column>
+                        <Column field='email' filterField='email' header="Email"></Column>
                         <Column field='name' filterField='name' header="Name"></Column>
                         <Column field='department' filterField='department' header="Department"></Column>
                         <Column field='specific_role' filterField='specific_role' header="Position"></Column>

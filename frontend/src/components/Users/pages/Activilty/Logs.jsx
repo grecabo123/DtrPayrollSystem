@@ -35,7 +35,7 @@ function Logs() {
     return (
         <div className='container-fluid'>
             <Panel header="Activity Logs">
-                <DataTable value={LogsData} loading={loading} paginator paginatorLeft rows={10}>
+                <DataTable value={LogsData} size='small' selectionMode={'single'} loading={loading} paginator paginatorLeft rows={10}>
                     <Column field='description' header="Description"></Column>
                     <Column field='created_at' body={DateFormat} header="DateTime"></Column>
                 </DataTable>

@@ -107,11 +107,11 @@ function CreateData() {
                 data-status={DepartmentFetch.status === 1 ? 0 : 1}
                 onClick={UpdateStatus} />
 
-                <Button className=' m-2 p-button-sm p-button-danger' 
+                {/* <Button className=' m-2 p-button-sm p-button-danger' 
                     onClick={DeleteData}
                     label='Delete Department'
                     data-id={DepartmentFetch.id}
-                />
+                /> */}
             </div>
         )
     }
@@ -172,7 +172,9 @@ function CreateData() {
                 </Panel>
             </div>
 
-            <Dialog onHide={HideModal} header="Add Department" draggable={false} position='top' visible={visible} style={{ width: "50vw" }}>
+            <Dialog onHide={HideModal} header="Add Department" draggable={false} position='top' visible={visible}
+                 style={{ width: '50vw' }} breakpoints={{ '960px': '75vw', '641px': '100vw' }}
+            >
                 <form onSubmit={DepartmentRegister} id='depart'>
                     <div className="row">
                         <div className="col-lg-12 mb-2">

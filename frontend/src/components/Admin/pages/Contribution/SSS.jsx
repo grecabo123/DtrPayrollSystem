@@ -205,7 +205,9 @@ function SSS() {
                 </DataTable>
             </Panel>
 
-            <Dialog header="SSS Contribution" visible={visible} position='top' draggable={false} onHide={HideModal} style={{ width: '50vw' }} >
+            <Dialog header="SSS Contribution" visible={visible} position='top' draggable={false} onHide={HideModal} 
+            style={{ width: '50vw' }} breakpoints={{ '960px': '75vw', '641px': '100vw' }}
+            >
                 <form onSubmit={AddSSS} id='form'>
                     <div className="container">
                         <div className="row">

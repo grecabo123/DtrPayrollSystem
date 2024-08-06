@@ -202,7 +202,7 @@ function TimePeriod() {
                 <Column field='id' body={ActionButton} header="Actions"></Column>
             </DataTable>
 
-            <Dialog header="Add Time Period" onHide={onHide} visible={visible} draggable={false} position='top' style={{ width: '50vw' }}>
+            <Dialog header="Add Time Period" onHide={onHide} visible={visible} draggable={false} position='top' style={{ width: '50vw' }} breakpoints={{ '960px': '75vw', '641px': '100vw' }}>
                 <form onSubmit={RegisterTime} id='form'>
                     <div className="container">
                         <div className="row">

@@ -64,9 +64,9 @@ function DetailsEmployee(props) {
                     :
                     <>
                         <Panel header="Employee Record">
-                        <div className="d-flex justify-content-end mb-1">
-                            <Button className='p-button-info p-button-sm' label='Return Page' onClick={Return} />
-                        </div>
+                            <div className="d-flex justify-content-end mb-1">
+                                <Button className='p-button-info p-button-sm' label='Return Page' onClick={Return} />
+                            </div>
                             <TabView className='p-tabview' activeIndex={activeIndex} onTabChange={(e) => setActiveIndex(e.index)}>
                                 <TabPanel header="Account">
                                     <div className="row mt-2">
@@ -158,8 +158,9 @@ function DetailsEmployee(props) {
                                             </h6>
                                         </div>
                                         <div className="mt-2">
-                                            <Announcement />
-
+                                            <div className="col-lg-12 col-md-12 mb-2">
+                                                <Announcement />
+                                            </div>
                                         </div>
                                     </div>
                                 </TabPanel>

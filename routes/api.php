@@ -4,6 +4,7 @@ use App\Http\Controllers\API\AccessController;
 use App\Http\Controllers\API\CompanyController;
 use App\Http\Controllers\API\ContributionController;
 use App\Http\Controllers\API\EvaluationController;
+use App\Http\Controllers\API\ScheduleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\SSSController;
@@ -29,6 +30,7 @@ Route::post('Login',[AuthController::class, 'Login']);
 
 // Logs
 Route::get('Logs/{id}',[LogsController::class, 'Logs']);
+
 
 // Events
 Route::get('AllEvent',[EventController::class, 'AllEvent']);
@@ -125,6 +127,9 @@ Route::post('UsersSettings',[ContributionController::class, 'UsersSettings']);
 
 // Company Details
 Route::get('CompanyDetails',[CompanyController::class, 'CompanyDetails']);
+
+
+Route::post('CreateSchedule',[ScheduleController::class, 'CreateSchedule']);
 
 Route::middleware(['auth:sanctum', 'isAPIAdmin'])->group(function () {
     Route::get('/checking',function() {

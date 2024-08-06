@@ -186,7 +186,9 @@ function Philhealth() {
                 </DataTable>
             </Panel>
 
-            <Dialog header="Philhealth Contribution" visible={visible} position='top' draggable={false} onHide={HideModal} style={{ width: '50vw' }} >
+            <Dialog header="Philhealth Contribution" visible={visible} position='top' draggable={false} onHide={HideModal} 
+            style={{ width: '50vw' }} breakpoints={{ '960px': '75vw', '641px': '100vw' }}
+            >
                 <form onSubmit={Philhealth} id='form'>
                     <div className="container">
                         <div className="row">

@@ -148,7 +148,7 @@ function HR() {
                                 <li class="nav-item"><a class="nav-link fs-5">
                                 </a>
                                 <div className="text-center">
-                                        <img src={`http://127.0.0.1:8000/${Details.company_logo}`} width={100} style={{ borderRadius: "50%" }} alt="" />
+                                        <img src={`${import.meta.env.VITE_API_BASE_URL}/${Details.company_logo}`} width={100} style={{ borderRadius: "50%" }} alt="" />
                                     </div>
                                 </li>
                                 <li class="nav-title">Pages</li>

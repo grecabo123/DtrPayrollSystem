@@ -10,7 +10,7 @@ import PrivateHumanResourceRoutes from './privateroutes/PrivateHumanResourceRout
 import QRScan from './components/QRScan';
 
 
-axios.defaults.baseURL = "http://127.0.0.1:8000";
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 axios.defaults.headers.post['Content-Type'] = "application/json";
 axios.defaults.headers.post['Accept'] = "application/json";
 
