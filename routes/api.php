@@ -135,6 +135,8 @@ Route::middleware(['auth:sanctum', 'isAPIAdmin'])->group(function () {
     Route::get('/checking',function() {
         return response()->json([
             "status"        =>      200,
+            "uid"           =>      auth()->user()->uid,
+            "user_uid"      =>      auth()->user()->id,
             "role"          =>      auth()->user()->role,
         ],200);
     }); 

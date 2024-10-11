@@ -2,16 +2,26 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { Redirect, Route, useHistory } from 'react-router-dom'
 import swal from 'sweetalert';
-import Admin from '../components/Admin/Admin'
+import Dashboard from '../components/Dashboard/Dashboard';
 
 function PrivateAdminRoutes({ ...rest }) {
     const [Authenticated, setAuthenticated] = useState(false);
     const [loading, setloading] = useState(true);
     const history = useHistory();
+    const [UserData, setUserData] = useState({
+        role: "",
+        uid: "",
+        user_uid: "",
+    })
     useEffect(() => {
         axios.get(`/api/checking`).then(res => {
             if (res.data.status === 200 && res.data.role === 1) {
                 setAuthenticated(true)
+                setUserData({
+                    role: res.data.role,
+                    uid: res.data.uid,
+                    user_uid: res.data.user_id,
+                })
             }
             setloading(false);
         }).catch((err) => {
@@ -60,8 +70,6 @@ function PrivateAdminRoutes({ ...rest }) {
         return Promise.reject(error);
     }
     );
-
-
     if (loading) {
         return <h4></h4>
     }
@@ -70,7 +78,7 @@ function PrivateAdminRoutes({ ...rest }) {
         <Route {...rest}
             render={({ props, location }) =>
                 Authenticated ?
-                    (<Admin {...rest} />) :
+                    (<Dashboard {...rest} user={UserData} />) :
                     (<Redirect to={{ pathname: '/', state: { from: location } }} />)
             }
 

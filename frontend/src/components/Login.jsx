@@ -36,25 +36,18 @@ function Login() {
                     // admin
                     if (res.data.role === 1) {
                         localStorage.setItem("auth_token", res.data.token);
-                        localStorage.setItem("auth_id", res.data.id);
-                        localStorage.setItem('auth_name', res.data.name);
                         history.push('/admin');
-                        
                         swal('Success', res.data.message, 'success')
                     }
                     // Human Resources
                     else if (res.data.role === 2) {
                         localStorage.setItem("auth_token", res.data.token);
-                        localStorage.setItem("auth_id", res.data.id);
-                        localStorage.setItem('auth_name', res.data.name);
                         history.push('/hr');
                         swal('Success', res.data.message, 'success')
                     }
                     // Accountant
                     else if (res.data.role === 3) {
                         localStorage.setItem("auth_token", res.data.token);
-                        localStorage.setItem("auth_id", res.data.id);
-                        localStorage.setItem('auth_name', res.data.name);
                         history.push('/accountant');
                         swal('Success', res.data.message, 'success')
                     }
@@ -62,13 +55,10 @@ function Login() {
                     // Employee
                     else {
                         localStorage.setItem("auth_token", res.data.token);
-                        localStorage.setItem("auth_id", res.data.id);
-                        localStorage.setItem('auth_name', res.data.name);
                         history.push('/employee');
                         swal('Success', res.data.message, 'success')
                     }
                     setBtnloadng(false)
-
                 }
                 else if(res.data.status === 504) {
                     setBtnloadng(false)
